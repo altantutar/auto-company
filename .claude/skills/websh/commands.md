@@ -156,3 +156,161 @@ With `-l`:
 [1] Second link text → https://external.com/
 ```
 
+**Pipeable:** Yes
+
+---
+
+### `cat <selector>`
+
+Extract text content from elements.
+
+**Syntax:**
+```
+cat <selector>
+cat .                # entire page text
+cat -n               # with line numbers
+cat -A               # show all (including hidden elements)
+```
+
+**Examples:**
+```
+cat .title
+cat article
+cat .comment | head 3
+cat -n .code-block
+```
+
+**Pipeable:** Yes
+
+---
+
+### `grep <pattern>`
+
+Filter content by text pattern (regex supported).
+
+**Syntax:**
+```
+grep <pattern>
+grep -i <pattern>    # case-insensitive
+grep -v <pattern>    # invert match
+grep -c <pattern>    # count matches
+grep -n <pattern>    # show line numbers
+grep -o <pattern>    # only matching part
+grep -A <n>          # n lines after match
+grep -B <n>          # n lines before match
+grep -C <n>          # n lines context (before and after)
+grep -E <pattern>    # extended regex
+grep -l              # list pages with matches (for locate/find)
+```
+
+**Pipeable:** Yes (filters input stream or searches page)
+
+---
+
+### `stat`
+
+Show metadata about the current page.
+
+**Syntax:**
+```
+stat
+stat -v              # verbose (all metadata)
+```
+
+**Output:**
+```
+URL:       https://news.ycombinator.com
+Title:     Hacker News
+Fetched:   2026-01-24T10:30:00Z
+Extracted: 3 passes, complete
+Links:     30
+Forms:     2
+Images:    0
+Size:      45 KB (html), 12 KB (parsed)
+```
+
+---
+
+### `head <n>` / `tail <n>`
+
+Take first or last n items from a stream.
+
+**Syntax:**
+```
+head <n>
+head -n <n>          # same as head <n>
+tail <n>
+tail -f              # follow (for watch/stream)
+```
+
+**Pipeable:** Yes (must be in pipe or with file)
+
+---
+
+### `sort`
+
+Sort lines of output.
+
+**Syntax:**
+```
+sort                 # alphabetical
+sort -n              # numeric
+sort -r              # reverse
+sort -u              # unique (remove duplicates)
+sort -k <n>          # sort by nth field
+sort -t <delim>      # field delimiter
+```
+
+**Pipeable:** Yes
+
+---
+
+### `uniq`
+
+Remove duplicate lines.
+
+**Syntax:**
+```
+uniq
+uniq -c              # prefix with count
+uniq -d              # only show duplicates
+uniq -u              # only show unique
+```
+
+**Pipeable:** Yes
+
+---
+
+### `wc`
+
+Count words, lines, characters.
+
+**Syntax:**
+```
+wc                   # all counts
+wc -l                # lines only
+wc -w                # words only
+wc -c                # characters only
+wc -L                # longest line length
+```
+
+**Web-specific:**
+```
+wc --links           # count links
+wc --images          # count images
+wc --forms           # count forms
+wc --headings        # count headings
+```
+
+**Pipeable:** Yes
+
+---
+
+### `cut`
+
+Extract columns/fields from output.
+
+**Syntax:**
+```
+cut -f <n>           # field n (1-indexed)
+cut -f <n,m>         # fields n and m
