@@ -141,3 +141,146 @@ WebSearch #3: Recent 2024-2025 filtered
 WebSearch #4: Academic domains
 WebSearch #5: Critical analysis
 WebSearch #6: Industry trends
+Task agent #1: Academic paper analysis
+Task agent #2: Technical documentation deep dive
+```
+
+**❌ WRONG (sequential execution):**
+```
+WebSearch #1 → wait for results → WebSearch #2 → wait → WebSearch #3...
+```
+
+**✅ RIGHT (parallel execution):**
+```
+All searches + agents launched simultaneously in one message
+```
+
+---
+
+### 4. Verify (Always Execute)
+
+**Step 1: Citation Verification (Catches Fabricated Sources)**
+
+```bash
+python scripts/verify_citations.py --report [path]
+```
+
+**Checks:**
+- DOI resolution (verifies citation actually exists)
+- Title/year matching (detects mismatched metadata)
+- Flags suspicious entries (2024+ without DOI, no URL, failed verification)
+
+**If suspicious citations found:**
+- Review flagged entries manually
+- Remove or replace fabricated sources
+- Re-run until clean
+
+**Step 2: Structure & Quality Validation**
+
+```bash
+python scripts/validate_report.py --report [path]
+```
+
+**8 automated checks:**
+1. Executive summary length (50-250 words)
+2. Required sections present (+ recommended: Claims table, Counterevidence)
+3. Citations formatted [1], [2], [3]
+4. Bibliography matches citations
+5. No placeholder text (TBD, TODO)
+6. Word count reasonable (500-10000)
+7. Minimum 10 sources
+8. No broken internal links
+
+**If fails:**
+- Attempt 1: Auto-fix formatting/links
+- Attempt 2: Manual review + correction
+- After 2 failures: **STOP** → Report issues → Ask user
+
+---
+
+### 5. Report
+
+**CRITICAL: Generate COMPREHENSIVE, DETAILED markdown reports**
+
+**File Organization (CRITICAL - Clean Accessibility):**
+
+**1. Create Organized Folder in Documents:**
+- ALWAYS create dedicated folder: `~/Documents/[TopicName]_Research_[YYYYMMDD]/`
+- Extract clean topic name from research question (remove special chars, use underscores/CamelCase)
+- Examples:
+  - "psilocybin research 2025" → `~/Documents/Psilocybin_Research_20251104/`
+  - "compare React vs Vue" → `~/Documents/React_vs_Vue_Research_20251104/`
+  - "AI safety trends" → `~/Documents/AI_Safety_Trends_Research_20251104/`
+- If folder exists, use it; if not, create it
+- This ensures clean organization and easy accessibility
+
+**2. Save All Formats to Same Folder:**
+
+**Markdown (Primary Source):**
+- Save to: `[Documents folder]/research_report_[YYYYMMDD]_[topic_slug].md`
+- Also save copy to: `~/.claude/research_output/` (internal tracking)
+- Full detailed report with all findings
+
+**HTML (McKinsey Style - ALWAYS GENERATE):**
+- Save to: `[Documents folder]/research_report_[YYYYMMDD]_[topic_slug].html`
+- Use McKinsey template: [mckinsey_template](./templates/mckinsey_report_template.html)
+- Design principles: Sharp corners (NO border-radius), muted corporate colors (navy #003d5c, gray #f8f9fa), ultra-compact layout, info-first structure
+- Place critical metrics dashboard at top (extract 3-4 key quantitative findings)
+- Use data tables for dense information presentation
+- 14px base font, compact spacing, no decorative gradients or colors
+- **Attribution Gradients (2025):** Wrap each citation [N] in `<span class="citation">` with nested tooltip div showing source details
+- OPEN in browser automatically after generation
+
+**PDF (Professional Print - ALWAYS GENERATE):**
+- Save to: `[Documents folder]/research_report_[YYYYMMDD]_[topic_slug].pdf`
+- Use generating-pdf skill (via Task tool with general-purpose agent)
+- Professional formatting with headers, page numbers
+- OPEN in default PDF viewer after generation
+
+**3. File Naming Convention:**
+All files use same base name for easy matching:
+- `research_report_20251104_psilocybin_2025.md`
+- `research_report_20251104_psilocybin_2025.html`
+- `research_report_20251104_psilocybin_2025.pdf`
+
+**Length Requirements (UNLIMITED with Progressive Assembly):**
+- Quick mode: 2,000+ words (baseline quality threshold)
+- Standard mode: 4,000+ words (comprehensive analysis)
+- Deep mode: 6,000+ words (thorough investigation)
+- UltraDeep mode: 10,000-50,000+ words (NO UPPER LIMIT - as comprehensive as evidence warrants)
+
+**How Unlimited Length Works:**
+Progressive file assembly allows ANY report length by generating section-by-section.
+Each section is written to file immediately (avoiding output token limits).
+Complex topics with many findings? Generate 20, 30, 50+ findings - no constraint!
+
+**Content Requirements:**
+- Use [template](./templates/report_template.md) as exact structure
+- Generate each section to APPROPRIATE depth (determined by evidence, not word targets)
+- Include specific data, statistics, dates, numbers (not vague statements)
+- Multiple paragraphs per finding with evidence (as many as needed)
+- Each section gets focused generation attention
+- DO NOT write summaries - write FULL analysis
+
+**Writing Standards:**
+- **Narrative-driven**: Write in flowing prose. Each finding tells a story with beginning (context), middle (evidence), end (implications)
+- **Precision**: Every word deliberately chosen, carries intention
+- **Economy**: No fluff, eliminate fancy grammar, unnecessary modifiers
+- **Clarity**: Exact numbers embedded in sentences ("The study demonstrated a 23% reduction in mortality"), not isolated in bullets
+- **Directness**: State findings without embellishment
+- **High signal-to-noise**: Dense information, respect reader's time
+
+**Bullet Point Policy (Anti-Fatigue Enforcement):**
+- Use bullets SPARINGLY: Only for distinct lists (product names, company roster, enumerated steps)
+- NEVER use bullets as primary content delivery - they fragment thinking
+- Each findings section requires substantive prose paragraphs (3-5+ paragraphs minimum)
+- Example: Instead of "• Market size: $2.4B" write "The global market reached $2.4 billion in 2023, driven by increasing consumer demand and regulatory tailwinds [1]."
+
+**Anti-Fatigue Quality Check (Apply to EVERY Section):**
+Before considering a section complete, verify:
+- [ ] **Paragraph count**: ≥3 paragraphs for major sections (## headings)
+- [ ] **Prose-first**: <20% of content is bullet points (≥80% must be flowing prose)
+- [ ] **No placeholders**: Zero instances of "Content continues", "Due to length", "[Sections X-Y]"
+- [ ] **Evidence-rich**: Specific data points, statistics, quotes (not vague statements)
+- [ ] **Citation density**: Major claims cited within same sentence
+
