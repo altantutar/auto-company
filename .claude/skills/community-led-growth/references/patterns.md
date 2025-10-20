@@ -125,3 +125,129 @@ Building grassroots community presence
     ├── Group Leader (volunteer)
     ├── Co-organizers (1-3)
     └── Members
+    ```
+    
+    ### 3. Group Leader Support
+    
+    **Resources Provided**
+    - Event planning templates
+    - Presentation decks
+    - Swag allocation
+    - Venue sponsorship
+    - Speaker connections
+    
+    **Recognition**
+    - Leader certification
+    - Exclusive access
+    - Annual summit
+    - Career opportunities
+    
+    ### 4. Event Formats
+    
+    **Beginner-Friendly**
+    - 101 workshops
+    - Show and tell
+    - Office hours
+    
+    **Intermediate**
+    - Deep dives
+    - Use case showcases
+    - Panel discussions
+    
+    **Advanced**
+    - Hackathons
+    - Architecture reviews
+    - Expert roundtables
+    
+    ### 5. Scaling Playbook
+    
+    | Stage | Groups | Focus |
+    |-------|--------|-------|
+    | Seed | 1-5 | Validate format, find leaders |
+    | Grow | 5-20 | Playbook, resources, training |
+    | Scale | 20-100 | Self-serve, automation |
+    | Mature | 100+ | Quality, consolidation |
+    
+    ### 6. Group Health Metrics
+    
+    ```
+    Group Health Score = (
+      Meeting frequency × 0.3 +
+      Attendance rate × 0.3 +
+      Member growth × 0.2 +
+      Leader engagement × 0.2
+    )
+    
+    Healthy: >70
+    At risk: 40-70
+    Inactive: <40
+    ```
+    
+
+---
+  #### **Name**
+Community-Attributed Growth
+  #### **Description**
+Measuring community's business impact
+  #### **When To Use**
+Proving community ROI
+  #### **Implementation**
+    ## Community Attribution Model
+    
+    ### 1. Attribution Categories
+    
+    **Acquisition Attribution**
+    - Referral from community member
+    - Conversion from community content
+    - Event attendance → signup
+    - Community mention in signup survey
+    
+    **Retention Attribution**
+    - Community members vs non-members retention
+    - Support tickets avoided (community answers)
+    - Feature adoption from community content
+    
+    **Expansion Attribution**
+    - Upsells influenced by community
+    - Expansion from community education
+    - Cross-sell from community exposure
+    
+    ### 2. Measurement Methods
+    
+    **Direct Attribution**
+    ```
+    Referral codes: Ambassador123 → trackable signup
+    UTM parameters: ?ref=community-post-xyz
+    Survey responses: "How did you hear about us?"
+    ```
+    
+    **Influence Attribution**
+    ```
+    Community touchpoint before conversion:
+    - Visited community within 30 days of signup
+    - Consumed community content before purchase
+    - Attended event before expansion
+    ```
+    
+    **Cohort Comparison**
+    ```
+    Community members vs non-members:
+    - Retention rate (Week 1, Month 1, Month 6)
+    - Expansion rate
+    - Support ticket volume
+    - NPS score
+    ```
+    
+    ### 3. ROI Calculation
+    
+    ```
+    Community Value =
+      (Attributed acquisition × CAC saved) +
+      (Retention lift × LTV delta) +
+      (Support deflection × Ticket cost) +
+      (Content value × Production cost)
+    
+    Community Cost =
+      Team cost +
+      Platform cost +
+      Program cost +
