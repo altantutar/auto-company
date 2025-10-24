@@ -126,3 +126,130 @@ grep -rn "child_process" --include="*.ts"
 grep -rn "find\s*(\s*{.*req\." --include="*.ts"
 grep -rn "\$where\|\$regex" --include="*.ts"
 ```
+
+### Vulnerable Code
+
+```typescript
+// SQL Injection
+const user = await db.query(`SELECT * FROM users WHERE email = '${email}'`);
+
+// Command Injection
+const output = execSync(`ping ${hostname}`);
+
+// NoSQL Injection
+const user = await User.findOne({ 
+  email: req.body.email,
+  password: req.body.password // ❌ Could be { $gt: '' }
+});
+```
+
+### Fixed Code
+
+```typescript
+// Parameterized queries
+const user = await db.query('SELECT * FROM users WHERE email = $1', [email]);
+
+// Input validation for commands
+const validHostname = /^[a-zA-Z0-9.-]+$/.test(hostname);
+if (!validHostname) throw new Error('Invalid hostname');
+const output = execSync(`ping ${hostname}`);
+
+// NoSQL with type checking
+const email = String(req.body.email);
+const user = await User.findOne({ email });
+const isValid = await bcrypt.compare(req.body.password, user.passwordHash);
+```
+
+---
+
+## A04:2021 – Insecure Design
+
+### Description
+Risks related to design flaws. Cannot be fixed by a perfect implementation.
+
+### Detection Patterns
+
+- Business logic flaws (manual review required)
+- Missing rate limiting on sensitive operations
+- No account lockout mechanism
+- Password reset without verification
+
+### Common Flaws
+
+```typescript
+// No rate limiting on login
+app.post('/login', async (req, res) => {
+  // ❌ Unlimited attempts
+});
+
+// Predictable password reset
+app.post('/reset-password', async (req, res) => {
+  const token = Date.now().toString(); // ❌ Predictable
+});
+
+// Business logic bypass
+app.post('/checkout', async (req, res) => {
+  const total = req.body.total; // ❌ Trust client-provided total
+});
+```
+
+### Fixed Design
+
+```typescript
+// Rate limiting
+import rateLimit from 'express-rate-limit';
+const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 5 });
+app.post('/login', loginLimiter, async (req, res) => { /* ... */ });
+
+// Secure password reset
+const token = crypto.randomBytes(32).toString('hex');
+const expiry = Date.now() + 3600000; // 1 hour
+
+// Server-side calculation
+const items = await Cart.findByUserId(req.user.id);
+const total = items.reduce((sum, item) => sum + item.price * item.qty, 0);
+```
+
+---
+
+## A05:2021 – Security Misconfiguration
+
+### Description
+Missing security hardening, default configurations, verbose errors.
+
+### Detection Patterns
+
+```bash
+# Debug mode
+grep -rn "debug\s*:\s*true\|DEBUG=true" --include="*.ts" --include="*.env*"
+
+# Stack traces exposed
+grep -rn "res\.send.*err\.\(stack\|message\)" --include="*.ts"
+
+# Default credentials
+grep -rn "admin:admin\|root:root\|password123" --include="*"
+```
+
+### Vulnerable Configuration
+
+```typescript
+// Express error handler exposing stack
+app.use((err, req, res, next) => {
+  res.status(500).json({ 
+    error: err.message,
+    stack: err.stack // ❌ Exposes internals
+  });
+});
+
+// CORS too permissive
+app.use(cors({ origin: '*' })); // ❌
+```
+
+### Fixed Configuration
+
+```typescript
+// Production error handler
+app.use((err, req, res, next) => {
+  console.error(err); // Log internally
+  res.status(500).json({ 
+    error: 'Internal server error',
