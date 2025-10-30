@@ -130,3 +130,134 @@ Comprehensive analytical templates for thorough investigation, audits, and evalu
 │              DMZ (Semi-trusted)         │
 │  [API Gateway] [CDN] [Public Services]  │
 └──────────────────┬──────────────────────┘
+                   │ Internal Firewall
+┌──────────────────┴──────────────────────┐
+│           Internal (Trusted)            │
+│  [App Servers] [Databases] [Queues]     │
+└─────────────────────────────────────────┘
+```
+
+### Threat Categories (STRIDE)
+
+#### Spoofing
+| Threat | Likelihood | Impact | Mitigation |
+|--------|------------|--------|------------|
+| Credential theft | Medium | High | MFA, rate limiting |
+| Session hijacking | Low | High | Secure cookies, HTTPS |
+
+#### Tampering
+| Threat | Likelihood | Impact | Mitigation |
+|--------|------------|--------|------------|
+| SQL injection | Medium | Critical | Parameterized queries |
+| Data modification | Low | High | Integrity checks |
+
+#### Repudiation
+[...]
+
+#### Information Disclosure
+[...]
+
+#### Denial of Service
+[...]
+
+#### Elevation of Privilege
+[...]
+
+### Attack Vectors
+1. **Vector 1**: [Description]
+   - Entry point: [Where]
+   - Technique: [How]
+   - Mitigation: [Defense]
+
+### Risk Matrix
+| Threat | Likelihood | Impact | Risk Score | Priority |
+|--------|------------|--------|------------|----------|
+| T1     | High       | Critical | 9 | P1 |
+| T2     | Medium     | High | 6 | P2 |
+| T3     | Low        | Medium | 3 | P3 |
+
+### Security Controls
+| Control | Type | Status | Coverage |
+|---------|------|--------|----------|
+| WAF | Preventive | ✅ Active | External |
+| SAST | Detective | ✅ CI/CD | Code |
+| DAST | Detective | ⚠️ Partial | Runtime |
+| Encryption | Preventive | ✅ Active | Data |
+
+### Recommendations
+1. [Priority 1 recommendations]
+2. [Priority 2 recommendations]
+3. [Priority 3 recommendations]
+```
+
+### Performance Analysis Template
+
+```markdown
+## Performance Analysis Report
+
+**System**: [System name]
+**Period**: [Date range]
+**Environment**: [Production/Staging]
+
+### Executive Summary
+[Key findings and recommendations]
+
+### Performance Metrics
+
+#### Response Times
+| Endpoint | P50 | P95 | P99 | Target | Status |
+|----------|-----|-----|-----|--------|--------|
+| /api/users | 45ms | 120ms | 350ms | <200ms | ✅ |
+| /api/search | 230ms | 890ms | 2.1s | <500ms | ❌ |
+| /api/reports | 1.2s | 3.4s | 8.2s | <2s | ❌ |
+
+#### Throughput
+| Service | Current RPS | Peak RPS | Capacity | Utilization |
+|---------|-------------|----------|----------|-------------|
+| API | 1,200 | 2,400 | 5,000 | 48% |
+| Worker | 500 | 800 | 1,000 | 80% |
+
+#### Resource Utilization
+| Resource | Average | Peak | Threshold | Status |
+|----------|---------|------|-----------|--------|
+| CPU | 45% | 78% | 80% | ⚠️ |
+| Memory | 62% | 85% | 85% | ⚠️ |
+| Disk I/O | 30% | 55% | 70% | ✅ |
+| Network | 25% | 40% | 60% | ✅ |
+
+### Bottleneck Analysis
+
+#### Identified Bottlenecks
+1. **Database Queries** (High Impact)
+   - Location: `/api/search` endpoint
+   - Cause: Missing index on `created_at` column
+   - Impact: 890ms P95 latency
+   - Fix: Add composite index
+
+2. **Memory Pressure** (Medium Impact)
+   - Location: Report generation service
+   - Cause: Large dataset loading into memory
+   - Impact: GC pauses, OOM risks
+   - Fix: Implement streaming/pagination
+
+### Load Test Results
+| Scenario | Users | Duration | Errors | Avg Response |
+|----------|-------|----------|--------|--------------|
+| Baseline | 100 | 10min | 0% | 120ms |
+| Normal | 500 | 30min | 0.1% | 180ms |
+| Peak | 1000 | 15min | 2.3% | 450ms |
+| Stress | 2000 | 5min | 15% | 2.1s |
+
+### Optimization Recommendations
+
+#### Quick Wins (This Sprint)
+1. Add database indexes - Expected: 40% improvement
+2. Enable query caching - Expected: 25% improvement
+3. Optimize N+1 queries - Expected: 30% improvement
+
+#### Medium Term (Next Quarter)
+1. Implement read replicas
+2. Add CDN for static assets
+3. Optimize serialization
+
+#### Long Term (6+ Months)
