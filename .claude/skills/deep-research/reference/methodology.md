@@ -126,3 +126,131 @@ As results arrive:
 
 **Adaptive completion based on quality threshold:**
 
+**Quality gate:** Proceed to Phase 4 when FIRST threshold reached:
+- **Quick mode:** 10+ sources with avg credibility >60/100 OR 2 minutes elapsed
+- **Standard mode:** 15+ sources with avg credibility >60/100 OR 5 minutes elapsed
+- **Deep mode:** 25+ sources with avg credibility >70/100 OR 10 minutes elapsed
+- **UltraDeep mode:** 30+ sources with avg credibility >75/100 OR 15 minutes elapsed
+
+**Continue background searches:**
+- If threshold reached early, continue remaining parallel searches in background
+- Additional sources used in Phase 5 (SYNTHESIZE) for depth and diversity
+- Allows fast progression without sacrificing thoroughness
+
+### Quality Standards
+
+**Source diversity requirements:**
+- Minimum 3 source types (academic, industry, news, technical docs)
+- Temporal diversity (mix of recent 2024-2025 + foundational older sources)
+- Perspective diversity (proponents + critics + neutral analysis)
+- Geographic diversity (not just US sources)
+
+**Credibility tracking:**
+- Score each source 0-100 using source_evaluator.py
+- Flag low-credibility sources (<40) for additional verification
+- Prioritize high-credibility sources (>80) for core claims
+
+**Techniques:**
+- Use WebSearch for current information (primary tool)
+- Use WebFetch for deep dives into specific sources (secondary)
+- Use Exa search (via WebSearch with type="neural") for semantic exploration
+- Use Grep/Read for local documentation
+- Execute code for computational analysis (when needed)
+- Use Task tool to spawn parallel retrieval agents (3-5 agents)
+
+**Output:** Organized information repository with source tracking, credibility scores, and coverage map
+
+---
+
+## Phase 4: TRIANGULATE - Cross-Reference Verification
+
+**Objective:** Validate information across multiple independent sources
+
+**Activities:**
+1. Identify claims requiring verification
+2. Cross-reference facts across 3+ sources
+3. Flag contradictions or uncertainties
+4. Assess source credibility
+5. Note consensus vs. debate areas
+6. Document verification status per claim
+
+**Quality Standards:**
+- Core claims must have 3+ independent sources
+- Flag any single-source information
+- Note recency of information
+- Identify potential biases
+
+**Output:** Verified fact base with confidence levels
+
+---
+
+## Phase 4.5: OUTLINE REFINEMENT - Dynamic Evolution (WebWeaver 2025)
+
+**Objective:** Adapt research direction based on evidence discovered
+
+**Problem Solved:** Prevents "locked-in" research when evidence points to different conclusions or uncovers more important angles than initially planned.
+
+**When to Execute:**
+- **Standard/Deep/UltraDeep modes only** (Quick mode skips this)
+- After Phase 4 (TRIANGULATE) completes
+- Before Phase 5 (SYNTHESIZE)
+
+**Activities:**
+
+1. **Review Initial Scope vs. Actual Findings**
+   - Compare Phase 1 scope with Phase 3-4 discoveries
+   - Identify unexpected patterns or contradictions
+   - Note underexplored angles that emerged as critical
+   - Flag overexplored areas that proved less important
+
+2. **Evaluate Outline Adaptation Need**
+
+   **Signals for adaptation (ANY triggers refinement):**
+   - Major findings contradict initial assumptions
+   - Evidence reveals more important angle than originally scoped
+   - Critical subtopic emerged that wasn't in original plan
+   - Original research question was too broad/narrow based on evidence
+   - Sources consistently discuss aspects not in initial outline
+
+   **Signals to keep current outline:**
+   - Evidence aligns with initial scope
+   - All key angles adequately covered
+   - No major gaps or surprises
+
+3. **Refine Outline (if needed)**
+
+   **Update structure to reflect evidence:**
+   - Add sections for unexpected but important findings
+   - Demote/remove sections with insufficient evidence
+   - Reorder sections based on evidence strength and importance
+   - Adjust scope boundaries based on what's actually discoverable
+
+   **Example adaptation:**
+   ```
+   Original outline:
+   1. Introduction
+   2. Technical Architecture
+   3. Performance Benchmarks
+   4. Conclusion
+
+   Refined after Phase 4 (evidence revealed security as critical):
+   1. Introduction
+   2. Technical Architecture
+   3. **Security Vulnerabilities (NEW - major finding)**
+   4. Performance Benchmarks (demoted - less critical than expected)
+   5. **Real-World Failure Modes (NEW - pattern emerged)**
+   6. Synthesis & Recommendations
+   ```
+
+4. **Targeted Gap Filling (if major gaps found)**
+
+   If outline refinement reveals critical knowledge gaps:
+   - Launch 2-3 targeted searches for newly identified angles
+   - Quick retrieval only (don't restart full Phase 3)
+   - Time-box to 2-5 minutes
+   - Update triangulation for new evidence only
+
+5. **Document Adaptation Rationale**
+
+   Record in methodology appendix:
+   - What changed in outline
