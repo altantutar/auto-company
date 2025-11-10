@@ -136,3 +136,141 @@ CITATION TRACKING (CRITICAL):
 ]
 
 **Key Evidence:**
+- Data point 1 from Source A [1]
+- Data point 2 from Source B [2]
+- Conflicting view from Source C [3] and how it was resolved
+
+**Implications:**
+[1-2 paragraphs on what this finding means for the user's decision/understanding]
+
+**Sources:** [1], [2], [3], [4]
+
+---
+
+### Finding 2: [Descriptive Title]
+
+[Follow same detailed structure as Finding 1]
+[Minimum 300 words per finding]
+[Include multiple paragraphs with evidence]
+
+**Sources:** [5], [6], [7], [8]
+
+---
+
+### Finding 3: [Descriptive Title]
+
+[Continue with same detail level]
+
+**Sources:** [9], [10], [11]
+
+---
+
+### Finding 4: [Descriptive Title]
+
+[And so on... Include 4-8 major findings minimum]
+
+**Sources:** [12], [13], [14]
+
+---
+
+[Continue with additional findings as needed]
+
+---
+
+## Synthesis & Insights
+
+<!-- This section should be 500-1000 words -->
+<!-- Go beyond just summarizing - generate NEW insights -->
+
+### Patterns Identified
+
+[2-3 paragraphs identifying key patterns across findings]
+
+**Pattern 1: [Name]**
+[Explain the pattern in detail, cite which findings support it]
+
+**Pattern 2: [Name]**
+[Continue...]
+
+### Novel Insights
+
+[2-3 paragraphs of insights that go BEYOND what sources explicitly stated]
+
+**Insight 1: [Name]**
+[What you discovered by connecting information across sources]
+[Why this matters even though no single source said it explicitly]
+
+**Insight 2: [Name]**
+[Continue...]
+
+### Implications
+
+[2-3 paragraphs on what all this means]
+
+**For [User Context]:**
+[Specific implications for the user's situation/decision]
+
+**Broader Implications:**
+[Wider significance of these findings]
+
+**Second-Order Effects:**
+[What might happen as consequences of these findings]
+
+---
+
+## Limitations & Caveats
+
+<!-- Be honest and comprehensive about what's uncertain -->
+
+### Counterevidence Register
+
+<!-- Document findings that contradict or challenge main conclusions -->
+
+[2-3 paragraphs explaining contradictory evidence found during research]
+
+**Contradictory Finding 1:** [Description]
+- Source: [Citation]
+- Why it contradicts: [Explanation]
+- How resolved/interpreted: [Your analysis]
+- Impact on conclusions: [Minimal/Moderate/Significant]
+
+**Contradictory Finding 2:** [Continue...]
+
+### Known Gaps
+
+[2-3 paragraphs explaining:]
+- What information was not available
+- What questions remain unanswered
+- What would strengthen this research
+
+**Gap 1:** [Description]
+- Why it's missing
+- How it affects conclusions
+- How to address it in future research
+
+**Gap 2:** [Continue...]
+
+### Assumptions
+
+[Revisit key assumptions from intro, now with more detail on their validity]
+
+**Assumption 1:** [Restate]
+- Evidence supporting it: [...]
+- Evidence challenging it: [...]
+- Overall validity: [...]
+
+### Areas of Uncertainty
+
+[2-3 paragraphs on:]
+- Where sources disagree
+- Where evidence is thin
+- Where extrapolation was necessary
+- What could change conclusions
+
+**Uncertainty 1:** [Topic]
+[Detailed explanation of what's uncertain and why]
+
+**Uncertainty 2:** [Continue...]
+
+---
+
