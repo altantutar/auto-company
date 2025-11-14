@@ -120,3 +120,124 @@
 - **Volunteer bias:** Self-selected participants differ
 - **Berkson's bias:** Hospital patients differ from general population
 - **Survivorship bias:** Only examining "survivors"
+
+**Detection:**
+- Compare characteristics of participants vs. target population
+- Analyze dropout patterns
+- Consider who is missing from the sample
+
+**Mitigation:**
+- Random sampling
+- Track and analyze non-responders
+- Use strategies to minimize dropout
+- Report participant flow diagrams
+
+### 10. Observer Bias (Detection Bias)
+**Description:** Researchers' expectations influence observations or measurements.
+
+**Manifestations:**
+- Measuring outcomes differently across groups
+- Interpreting ambiguous results based on group assignment
+- Unconsciously cueing participants
+
+**Mitigation:**
+- Blinding of observers/assessors
+- Objective, automated measurements
+- Standardized protocols
+- Inter-rater reliability checks
+
+### 11. Performance Bias
+**Description:** Systematic differences in care provided to comparison groups.
+
+**Manifestations:**
+- Treating experimental group differently
+- Providing additional attention to one group
+- Differential adherence to protocols
+
+**Mitigation:**
+- Standardize all procedures
+- Blind participants and providers
+- Use placebo controls
+- Monitor protocol adherence
+
+### 12. Measurement Bias (Information Bias)
+**Description:** Systematic errors in how variables are measured.
+
+**Types:**
+- **Recall bias:** Systematic differences in accuracy of recall
+- **Social desirability bias:** Responding in socially acceptable ways
+- **Interviewer bias:** Interviewer's characteristics affect responses
+- **Instrument bias:** Measurement tools systematically err
+
+**Mitigation:**
+- Use validated, objective measures
+- Standardize data collection
+- Blind participants to hypotheses
+- Verify self-reports with objective data
+
+### 13. Confounding Bias
+**Description:** Effect of extraneous variable mixed with the variable of interest.
+
+**Examples:**
+- Age confounding relationship between exercise and health
+- Socioeconomic status confounding education and outcomes
+- Indication bias in treatment studies
+
+**Mitigation:**
+- Randomization
+- Matching
+- Statistical adjustment
+- Stratification
+- Restriction
+
+### 14. Reporting Bias
+**Description:** Selective reporting of results.
+
+**Types:**
+- **Outcome reporting bias:** Selectively reporting outcomes
+- **Time-lag bias:** Delayed publication of negative results
+- **Language bias:** Publishing positive results in English
+- **Citation bias:** Preferentially citing positive studies
+
+**Mitigation:**
+- Preregister all outcomes
+- Report all planned analyses
+- Distinguish primary from secondary outcomes
+- Use study registries
+
+### 15. Spectrum Bias
+**Description:** Test performance varies depending on the spectrum of disease severity in the sample.
+
+**Manifestations:**
+- Diagnostic tests appearing more accurate in extreme cases
+- Treatment effects differing by severity
+
+**Mitigation:**
+- Test in representative samples
+- Report performance across disease spectrum
+- Avoid case-control designs for diagnostic studies
+
+### 16. Lead-Time Bias
+**Description:** Apparent survival benefit due to earlier detection, not improved outcomes.
+
+**Example:**
+- Screening detecting disease earlier makes survival seem longer, even if death occurs at same age
+
+**Mitigation:**
+- Measure mortality, not just survival from diagnosis
+- Use randomized screening trials
+- Consider length-time and overdiagnosis bias
+
+### 17. Length-Time Bias
+**Description:** Screening disproportionately detects slower-growing, less aggressive cases.
+
+**Example:**
+- Slow-growing cancers detected more often than fast-growing ones, making screening appear beneficial
+
+**Mitigation:**
+- Randomized trials with mortality endpoints
+- Consider disease natural history
+
+### 18. Response Bias
+**Description:** Systematic pattern in how participants respond.
+
