@@ -108,3 +108,112 @@ Windows 下推荐“PowerShell 命令入口 + WSL 执行内核”：
 .\scripts\windows\autostart-status-win.ps1  # 查看自启状态
 ```
 
+### Windows 前置事项（每次开始前）
+
+1. 只在 `clone_win/` 运行与提交，`clone/` 仅留档。
+2. WSL 内 `make`、`codex`、`jq` 可用。
+3. `codex` 已在 WSL 内登录且可调用。
+4. 建议 `command -v codex` 优先指向 WSL 本地路径（`/home/...`）。
+5. `clone/` 若在 WSL 下显示大量 `git status` 修改（多为换行差异）可忽略，不要在该目录提交。
+
+### Windows 推荐操作（标准）
+
+```powershell
+.\scripts\windows\start-win.ps1 -CycleTimeoutSeconds 1800 -LoopInterval 30
+.\scripts\windows\status-win.ps1
+.\scripts\windows\monitor-win.ps1
+.\scripts\windows\last-win.ps1
+.\scripts\windows\cycles-win.ps1
+.\scripts\windows\stop-win.ps1
+```
+
+推荐参数：
+- `CycleTimeoutSeconds` 建议 `900-1800`
+- `LoopInterval` 建议 `30-60`
+
+可选自启：
+- 默认不自动启用
+- 按需执行 `.\scripts\windows\enable-autostart-win.ps1`
+- 若提示 `Access is denied`，请用“管理员 PowerShell”执行启用/关闭自启脚本
+
+### Windows + WSL 索引
+
+完整目录索引与脚本职责表请看：[`INDEX.md`](INDEX.md)
+
+### Chat-first 操作方式（推荐）
+
+如果你不想手动执行命令，可以直接和 Codex 对话，由 Codex 在 Windows 侧代你调用 WSL。
+
+可行性：
+- 可行。
+- 底层仍是同一套脚本链路：`scripts/windows/start-win.ps1` -> WSL `systemd --user` -> `scripts/core/auto-loop.sh`。
+- 核心运行机制与手动执行一致，差异只在“操作入口”从手工命令变为对话驱动。
+
+## 常用命令
+
+```bash
+make help       # 查看所有命令
+make start      # 前台启动循环
+make start-awake# 前台启动 + 防止 macOS 睡眠（仅 macOS）
+make stop       # 停止循环
+make status     # 查看状态 + 最新共识
+make monitor    # 实时日志
+make last       # 上一轮完整输出
+make cycles     # 历史周期摘要
+make awake      # 已在跑时，为当前 PID 挂防睡眠（仅 macOS）
+make install    # 安装守护进程（macOS: launchd, Linux/WSL: systemd --user）
+make uninstall  # 卸载守护进程
+make pause      # 暂停守护（macOS/WSL）
+make resume     # 恢复守护（macOS/WSL）
+```
+
+## 防止 Mac 睡眠（推荐）
+
+macOS 的屏保/锁屏通常不会杀进程，但系统睡眠会让任务暂停。长时间运行建议开启防睡眠：
+
+```bash
+make start-awake   # 启动循环并保持系统唤醒（直到循环退出）
+
+# 如果循环已经在跑（比如你已执行 make start）：
+make awake         # 读取 .auto-loop.pid 并对该 PID 挂 caffeinate
+```
+
+说明：
+- 这两个命令依赖 macOS 自带 `caffeinate`
+- `make awake` 会在 PID 结束后自动退出
+
+## 运作机制
+
+### 自动收敛（防止无限讨论）
+
+| 周期 | 动作 |
+|------|------|
+| Cycle 1 | 头脑风暴——每个 Agent 提一个想法，排出 top 3 |
+| Cycle 2 | 验证 #1——Munger 做 Pre-Mortem，Thompson 验证市场，Campbell 算账 → **GO / NO-GO** |
+| Cycle 3+ | GO → 建 repo 写代码部署。NO-GO → 试下一个。**纯讨论禁止** |
+
+### 六大标准流程
+
+| # | 流程 | 协作链 |
+|---|------|--------|
+| 1 | **新产品评估** | 调研 → CEO → Munger → 产品 → CTO → CFO |
+| 2 | **功能开发** | 交互 → UI → 全栈 → QA → DevOps |
+| 3 | **产品发布** | QA → DevOps → 营销 → 销售 → 运营 → CEO |
+| 4 | **定价变现** | 调研 → CFO → 销售 → Munger → CEO |
+| 5 | **每周复盘** | 运营 → 销售 → CFO → QA → CEO |
+| 6 | **机会发现** | 调研 → CEO → Munger → CFO |
+
+## 引导方向
+
+AI 团队全自主运行，但你可以随时介入：
+
+| 方式 | 操作 |
+|------|------|
+| **改方向** | 修改 `memories/consensus.md` 的 "Next Action" |
+| **暂停** | `make pause`（macOS/WSL 守护模式）或 `.\scripts\windows\stop-win.ps1`（Windows 入口） |
+| **恢复** | `make resume`，回到自主模式 |
+| **审查产出** | 查看 `docs/*/`——每个 Agent 的工作成果 |
+
+## 安全红线
+
+写死在 `CLAUDE.md`，对所有 Agent 强制生效：
