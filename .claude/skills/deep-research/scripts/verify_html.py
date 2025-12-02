@@ -108,3 +108,113 @@ class HTMLVerifier:
             "\U0001F300-\U0001F5FF"  # symbols & pictographs
             "\U0001F680-\U0001F6FF"  # transport & map symbols
             "\U0001F1E0-\U0001F1FF"  # flags
+            "\U00002702-\U000027B0"
+            "\U000024C2-\U0001F251"
+            "]+",
+            flags=re.UNICODE
+        )
+
+        emojis = emoji_pattern.findall(html)
+        if emojis:
+            unique_emojis = set(emojis)
+            self.errors.append(f"Found {len(emojis)} emojis in HTML (should be none): {unique_emojis}")
+
+    def _check_structure(self, html: str):
+        """Verify HTML has proper structure"""
+        required_elements = [
+            ('<html', 'HTML tag'),
+            ('<head', 'head tag'),
+            ('<body', 'body tag'),
+            ('<title>', 'title tag'),
+            ('class="header"', 'header section'),
+            ('class="content"', 'content section'),
+            ('class="bibliography"', 'bibliography section'),
+        ]
+
+        for element, name in required_elements:
+            if element not in html:
+                self.errors.append(f"Missing {name} in HTML")
+
+        # Check for unclosed tags (basic check)
+        open_divs = html.count('<div')
+        close_divs = html.count('</div>')
+
+        if abs(open_divs - close_divs) > 2:  # Allow small discrepancy
+            self.warnings.append(
+                f"Possible unclosed divs: {open_divs} opening tags, {close_divs} closing tags"
+            )
+
+    def _check_citations(self, html: str, md: str):
+        """Verify citations are present"""
+        # Extract citations from markdown
+        md_citations = set(re.findall(r'\[(\d+)\]', md))
+
+        # Extract citations from HTML (excluding bibliography)
+        html_content = html.split('class="bibliography"')[0] if 'class="bibliography"' in html else html
+        html_citations = set(re.findall(r'\[(\d+)\]', html_content))
+
+        if len(md_citations) > 0 and len(html_citations) == 0:
+            self.errors.append("No citations found in HTML content (but present in MD)")
+
+        if len(md_citations) > len(html_citations) * 1.5:  # Allow some variation
+            self.warnings.append(
+                f"Fewer citations in HTML ({len(html_citations)}) than MD ({len(md_citations)})"
+            )
+
+    def _check_bibliography(self, html: str, md: str):
+        """Verify bibliography is present and formatted"""
+        if '## Bibliography' in md:
+            if 'class="bibliography"' not in html:
+                self.errors.append("Bibliography section missing from HTML")
+            elif 'class="bib-entry"' not in html:
+                self.warnings.append("Bibliography present but entries not properly formatted")
+
+    def _print_results(self):
+        """Print verification results"""
+        print(f"\n{'-'*60}")
+        print("VERIFICATION RESULTS")
+        print(f"{'-'*60}\n")
+
+        if self.errors:
+            print(f"❌ ERRORS ({len(self.errors)}):")
+            for i, error in enumerate(self.errors, 1):
+                print(f"  {i}. {error}")
+            print()
+
+        if self.warnings:
+            print(f"⚠️  WARNINGS ({len(self.warnings)}):")
+            for i, warning in enumerate(self.warnings, 1):
+                print(f"  {i}. {warning}")
+            print()
+
+        if not self.errors and not self.warnings:
+            print("✅ All checks passed! HTML report is valid.")
+            print()
+
+        print(f"{'-'*60}\n")
+
+
+def main():
+    """Main entry point"""
+    parser = argparse.ArgumentParser(description='Verify HTML research report')
+    parser.add_argument('--html', type=Path, required=True, help='Path to HTML report')
+    parser.add_argument('--md', type=Path, required=True, help='Path to markdown report')
+
+    args = parser.parse_args()
+
+    if not args.html.exists():
+        print(f"Error: HTML file not found: {args.html}")
+        return 1
+
+    if not args.md.exists():
+        print(f"Error: Markdown file not found: {args.md}")
+        return 1
+
+    verifier = HTMLVerifier(args.html, args.md)
+    success = verifier.verify()
+
+    return 0 if success else 1
+
+
+if __name__ == "__main__":
+    exit(main())
