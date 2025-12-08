@@ -133,3 +133,137 @@ class CloudflareDeploy:
                 for line in f:
                     if line.strip().startswith('name'):
                         # Parse: name = "worker-name"
+                        return line.split('=')[1].strip().strip('"\'')
+        except Exception as e:
+            raise CloudflareDeployError(f"Failed to read worker name: {e}")
+
+        raise CloudflareDeployError("Worker name not found in wrangler.toml")
+
+    def build_deploy_command(self) -> List[str]:
+        """
+        Build wrangler deploy command with appropriate flags.
+
+        Returns:
+            Command as list of strings
+        """
+        cmd = ["wrangler", "deploy"]
+
+        if self.env:
+            cmd.extend(["--env", self.env])
+
+        if self.dry_run:
+            cmd.append("--dry-run")
+
+        return cmd
+
+    def deploy(self) -> bool:
+        """
+        Execute deployment.
+
+        Returns:
+            True if successful
+
+        Raises:
+            CloudflareDeployError: If deployment fails
+        """
+        # Validate
+        self.validate_project()
+
+        if not self.check_wrangler_installed():
+            raise CloudflareDeployError(
+                "wrangler CLI not installed. Install: npm install -g wrangler"
+            )
+
+        worker_name = self.get_worker_name()
+        env_suffix = f" ({self.env})" if self.env else ""
+        mode = "DRY RUN" if self.dry_run else "DEPLOY"
+
+        print(f"\n{mode}: {worker_name}{env_suffix}")
+        print(f"Project: {self.project_dir}\n")
+
+        # Build and run command
+        cmd = self.build_deploy_command()
+        exit_code, stdout, stderr = self.run_command(cmd)
+
+        # Output results
+        if stdout:
+            print(stdout)
+        if stderr:
+            print(stderr, file=sys.stderr)
+
+        if exit_code == 0:
+            status = "would be deployed" if self.dry_run else "deployed successfully"
+            print(f"\n✓ Worker {status}")
+            return True
+        else:
+            raise CloudflareDeployError("Deployment failed")
+
+
+def main():
+    """CLI entry point."""
+    parser = argparse.ArgumentParser(
+        description="Deploy Cloudflare Worker with wrangler",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""
+Examples:
+  python cloudflare-deploy.py
+  python cloudflare-deploy.py --env production
+  python cloudflare-deploy.py --project ./my-worker --env staging
+  python cloudflare-deploy.py --dry-run
+  python cloudflare-deploy.py --env prod --verbose
+        """
+    )
+
+    parser.add_argument(
+        "--project",
+        type=str,
+        default=".",
+        help="Path to Worker project directory (default: current directory)"
+    )
+
+    parser.add_argument(
+        "--env",
+        type=str,
+        choices=["production", "staging", "dev"],
+        help="Environment to deploy to (production, staging, dev)"
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Preview deployment without actually deploying"
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose output"
+    )
+
+    args = parser.parse_args()
+
+    try:
+        deployer = CloudflareDeploy(
+            project_dir=args.project,
+            env=args.env,
+            dry_run=args.dry_run,
+            verbose=args.verbose
+        )
+
+        success = deployer.deploy()
+        sys.exit(0 if success else 1)
+
+    except CloudflareDeployError as e:
+        print(f"Error: {e}", file=sys.stderr)
+        sys.exit(1)
+    except KeyboardInterrupt:
+        print("\nDeployment cancelled by user", file=sys.stderr)
+        sys.exit(130)
+    except Exception as e:
+        print(f"Unexpected error: {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+if __name__ == "__main__":
+    main()
