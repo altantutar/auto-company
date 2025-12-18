@@ -84,3 +84,88 @@ import { cn } from "@/lib/utils"
 **What `cn()` does**: Merges Tailwind classes intelligently (later classes override earlier ones).
 
 ---
+
+### 3. Compose shadcn/ui Components
+
+**Pattern:**
+```tsx
+<Dialog>
+  <DialogTrigger asChild>
+    <Button>Open</Button>
+  </DialogTrigger>
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>Title</DialogTitle>
+    </DialogHeader>
+  </DialogContent>
+</Dialog>
+```
+
+**Key Concept**: Use composition (wrapping components) rather than customization (passing props).
+
+---
+
+## Advanced Patterns
+
+### Conditional Theme Variables
+
+Apply different variables based on state:
+
+```tsx
+<div className={cn(
+  "rounded-lg p-4",
+  variant === "success" && "bg-success text-success-foreground",
+  variant === "error" && "bg-destructive text-destructive-foreground"
+)} />
+```
+
+### Custom Radius Tokens
+
+Add semantic border radius:
+
+```css
+@theme inline {
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+}
+```
+
+Usage: `className="rounded-[var(--radius-lg)]"`
+
+### Component Variants Pattern
+
+Use `cva()` from `class-variance-authority` for complex variants:
+
+```tsx
+import { cva } from "class-variance-authority"
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center rounded-md",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground",
+        destructive: "bg-destructive text-destructive-foreground",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 px-3",
+        lg: "h-11 px-8",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  }
+)
+```
+
+---
+
+## Official Resources
+
+- Tailwind v4 Docs: https://tailwindcss.com/blog/tailwindcss-v4-beta
+- shadcn/ui: https://ui.shadcn.com
+- class-variance-authority: https://cva.style/docs
