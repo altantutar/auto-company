@@ -82,3 +82,86 @@ coverage.xml
 *.cover
 *.py,cover
 .hypothesis/
+
+# mypy / type checkers
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# pyenv
+.python-version
+
+# ====================
+# Environment Variables
+# ====================
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# ====================
+# Secrets & Credentials
+# ====================
+*.pem
+*.key
+credentials.json
+secrets.json
+
+# ====================
+# Project-specific
+# ====================
+# Session tracking files
+.call_count
+.circuit_breaker_history
+.circuit_breaker_state
+.exit_signals
+.last_reset
+.ralph_session
+.response_analysis
+.claude_session_id
+progress.json
+status.json
+logs/
+
+# Auto-loop state files
+.auto-loop.pid
+.auto-loop-state
+.auto-loop-stop
+.auto-loop-paused
+.auto-loop.env
+.auto-loop-awake.pid
+.auto-loop-awake.stop
+memories/consensus.md.bak
+
+# Projects directory (show folder on GitHub, hide contents)
+projects/*
+!projects/.gitkeep
+.vscode-test-web
+**/.vitepress/cache
+**/.vitepress/.temp
+**.tmp.md
+product-materials
+
+# for codex
+tasks
+
+# ====================
+# Docs & Memory
+# ====================
+# Keep role folders, ignore their generated docs
+docs/*
+!docs/*/
+docs/*/*
+!docs/*/.gitkeep
+!docs/windows-setup.md
+
+# Ignore all memories (keep folder marker only)
+memories/*
+!memories/.gitkeep
