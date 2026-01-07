@@ -288,3 +288,148 @@ function requirePermission(...permissions: Permission[]) {
     const hasPermissions = permissions.every(p => userPermissions.includes(p));
     
     if (!hasPermissions) {
+      return res.status(403).json({ 
+        error: 'Missing required permissions',
+        required: permissions
+      });
+    }
+    
+    next();
+  };
+}
+```
+
+### Resource-Based Authorization
+
+```typescript
+// Ownership check middleware
+async function requireOwnership(resourceType: string) {
+  return async (req: Request, res: Response, next: NextFunction) => {
+    const user = req.user as User;
+    const resourceId = req.params.id;
+    
+    const resource = await getResource(resourceType, resourceId);
+    
+    if (!resource) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
+    
+    // Check ownership
+    if (resource.userId !== user.id && !user.roles.includes(Role.ADMIN)) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+    
+    req.resource = resource;
+    next();
+  };
+}
+
+// Usage
+app.put('/api/posts/:id', authenticate, requireOwnership('post'), updatePost);
+```
+
+---
+
+## Multi-Factor Authentication
+
+### TOTP Implementation
+
+```typescript
+import speakeasy from 'speakeasy';
+import QRCode from 'qrcode';
+
+// Generate secret for user
+async function setupMFA(userId: string): Promise<{ secret: string; qrCode: string }> {
+  const secret = speakeasy.generateSecret({
+    name: `MyApp:${userId}`,
+    issuer: 'MyApp'
+  });
+  
+  const qrCode = await QRCode.toDataURL(secret.otpauth_url!);
+  
+  // Store secret (encrypted) temporarily until verified
+  await MFASetup.create({
+    userId,
+    secret: encrypt(secret.base32),
+    expiresAt: new Date(Date.now() + 10 * 60 * 1000) // 10 minutes
+  });
+  
+  return { secret: secret.base32, qrCode };
+}
+
+// Verify and enable MFA
+async function verifyAndEnableMFA(userId: string, token: string): Promise<boolean> {
+  const setup = await MFASetup.findOne({ userId });
+  
+  if (!setup || setup.expiresAt < new Date()) {
+    throw new Error('MFA setup expired');
+  }
+  
+  const secret = decrypt(setup.secret);
+  
+  const verified = speakeasy.totp.verify({
+    secret,
+    encoding: 'base32',
+    token,
+    window: 1  // Allow 1 step tolerance
+  });
+  
+  if (verified) {
+    await User.update(userId, { mfaSecret: setup.secret, mfaEnabled: true });
+    await MFASetup.delete({ userId });
+  }
+  
+  return verified;
+}
+
+// Verify TOTP during login
+function verifyTOTP(secret: string, token: string): boolean {
+  return speakeasy.totp.verify({
+    secret: decrypt(secret),
+    encoding: 'base32',
+    token,
+    window: 1
+  });
+}
+```
+
+### Recovery Codes
+
+```typescript
+async function generateRecoveryCodes(userId: string): Promise<string[]> {
+  const codes = Array.from({ length: 10 }, () => 
+    crypto.randomBytes(4).toString('hex').toUpperCase()
+  );
+  
+  // Store hashed codes
+  const hashedCodes = await Promise.all(
+    codes.map(async code => ({
+      hash: await bcrypt.hash(code, 10),
+      used: false
+    }))
+  );
+  
+  await User.update(userId, { recoveryCodes: hashedCodes });
+  
+  // Return plain codes once - user must save them
+  return codes;
+}
+
+async function useRecoveryCode(userId: string, code: string): Promise<boolean> {
+  const user = await User.findById(userId);
+  
+  for (const storedCode of user.recoveryCodes) {
+    if (!storedCode.used && await bcrypt.compare(code, storedCode.hash)) {
+      storedCode.used = true;
+      await user.save();
+      return true;
+    }
+  }
+  
+  return false;
+}
+```
+
+---
+
+## Security Controls
