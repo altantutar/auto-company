@@ -277,3 +277,142 @@ See `reference/dark-mode.md` for ModeToggle component code.
 ### ❌ Never Do:
 
 1. **Put `:root` or `.dark` inside `@layer base`**
+   ```css
+   /* WRONG */
+   @layer base {
+     :root { --background: hsl(...); }
+   }
+   ```
+
+2. **Use `.dark { @theme { } }` pattern**
+   ```css
+   /* WRONG - v4 doesn't support nested @theme */
+   .dark {
+     @theme {
+       --color-primary: hsl(...);
+     }
+   }
+   ```
+
+3. **Double-wrap colors**
+   ```css
+   /* WRONG */
+   body {
+     background-color: hsl(var(--background));
+   }
+   ```
+
+4. **Use `tailwind.config.ts` for theme colors**
+   ```typescript
+   /* WRONG - v4 ignores this */
+   export default {
+     theme: {
+       extend: {
+         colors: { primary: 'hsl(var(--primary))' }
+       }
+     }
+   }
+   ```
+
+5. **Use `@apply` directive (deprecated in v4)**
+
+6. **Use `dark:` variants for semantic colors**
+   ```tsx
+   /* WRONG */
+   <div className="bg-primary dark:bg-primary-dark" />
+
+   /* CORRECT */
+   <div className="bg-primary" />
+   ```
+
+---
+
+## Semantic Color Tokens
+
+Always use semantic names for colors:
+
+```css
+:root {
+  --destructive: hsl(0 84.2% 60.2%);        /* Red - errors, critical */
+  --success: hsl(142.1 76.2% 36.3%);        /* Green - success states */
+  --warning: hsl(38 92% 50%);               /* Yellow - warnings */
+  --info: hsl(221.2 83.2% 53.3%);           /* Blue - info, primary */
+}
+```
+
+**Usage:**
+```tsx
+<div className="bg-destructive text-destructive-foreground">Critical</div>
+<div className="bg-success text-success-foreground">Success</div>
+<div className="bg-warning text-warning-foreground">Warning</div>
+<div className="bg-info text-info-foreground">Info</div>
+```
+
+---
+
+## Common Issues & Quick Fixes
+
+| Symptom | Cause | Fix |
+|---------|-------|-----|
+| `bg-primary` doesn't work | Missing `@theme inline` mapping | Add `@theme inline` block |
+| Colors all black/white | Double `hsl()` wrapping | Use `var(--color)` not `hsl(var(--color))` |
+| Dark mode not switching | Missing ThemeProvider | Wrap app in `<ThemeProvider>` |
+| Build fails | `tailwind.config.ts` exists | Delete the file |
+| Text invisible | Wrong contrast colors | Check color definitions in `:root`/`.dark` |
+
+See `reference/common-gotchas.md` for complete troubleshooting guide.
+
+---
+
+## File Templates
+
+All templates are available in the `templates/` directory:
+
+- **index.css** - Complete CSS setup with all color variables
+- **components.json** - shadcn/ui v4 configuration
+- **vite.config.ts** - Vite + Tailwind plugin setup
+- **tsconfig.app.json** - TypeScript with path aliases
+- **theme-provider.tsx** - Dark mode provider with localStorage
+- **utils.ts** - `cn()` utility for class merging
+
+Copy these files to your project and customize as needed.
+
+---
+
+## Complete Setup Checklist
+
+- [ ] Vite + React + TypeScript project created
+- [ ] `@tailwindcss/vite` installed (NOT postcss)
+- [ ] `vite.config.ts` uses `tailwindcss()` plugin
+- [ ] `tsconfig.json` has path aliases configured
+- [ ] `components.json` exists with `"config": ""`
+- [ ] NO `tailwind.config.ts` file exists
+- [ ] `src/index.css` follows v4 pattern:
+  - [ ] `:root` and `.dark` at root level (not in @layer)
+  - [ ] Colors wrapped with `hsl()`
+  - [ ] `@theme inline` maps all variables
+  - [ ] `@layer base` uses unwrapped variables
+- [ ] Theme provider installed and wrapping app
+- [ ] Dark mode toggle component created
+- [ ] Test theme switching works in browser
+
+---
+
+## Advanced Topics
+
+Load `references/advanced-usage.md` for advanced patterns including:
+
+- **Custom Colors**: Add semantic colors beyond default palette
+- **v3 Migration**: See `references/migration-guide.md` for complete guide
+- **Component Best Practices**: Semantic tokens, cn() utility, composition patterns
+
+**Quick Example:**
+```css
+:root { --brand: hsl(280 65% 60%); }
+@theme inline { --color-brand: var(--brand); }
+```
+Usage: `<div className="bg-brand">Branded</div>`
+
+For detailed patterns and component composition examples, load `references/advanced-usage.md`.
+
+---
