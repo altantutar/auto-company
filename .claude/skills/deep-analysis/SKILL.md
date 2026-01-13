@@ -261,3 +261,134 @@ Comprehensive analytical templates for thorough investigation, audits, and evalu
 3. Optimize serialization
 
 #### Long Term (6+ Months)
+1. Service decomposition
+2. Event-driven architecture
+3. Edge computing deployment
+
+### Capacity Planning
+| Timeframe | Expected Load | Current Capacity | Gap | Action |
+|-----------|---------------|------------------|-----|--------|
+| 3 months | +25% | 5,000 RPS | ✅ | Monitor |
+| 6 months | +50% | 5,000 RPS | ⚠️ | Scale |
+| 12 months | +100% | 5,000 RPS | ❌ | Redesign |
+```
+
+### Architecture Review Template
+
+```markdown
+## Architecture Review
+
+**System**: [System name]
+**Version**: [Current architecture version]
+**Review Date**: [YYYY-MM-DD]
+**Participants**: [Team members]
+
+### Current Architecture
+
+#### System Diagram
+```
+[Include architecture diagram or ASCII representation]
+```
+
+#### Components
+| Component | Purpose | Technology | Owner |
+|-----------|---------|------------|-------|
+| API Gateway | Request routing | Kong | Platform |
+| Auth Service | Authentication | Keycloak | Security |
+| Core API | Business logic | Python/FastAPI | Backend |
+| Database | Data persistence | PostgreSQL | Data |
+
+#### Data Flow
+1. User request → API Gateway
+2. API Gateway → Auth validation
+3. Auth → Core API
+4. Core API → Database
+5. Response → User
+
+### Evaluation Criteria
+
+#### Scalability
+| Aspect | Current | Target | Gap | Score |
+|--------|---------|--------|-----|-------|
+| Horizontal scaling | Manual | Auto | Yes | 6/10 |
+| Database scaling | Single | Sharded | Yes | 5/10 |
+| Caching | Redis | Distributed | No | 8/10 |
+
+#### Reliability
+| Aspect | Current | Target | Gap | Score |
+|--------|---------|--------|-----|-------|
+| Availability | 99.5% | 99.9% | Yes | 7/10 |
+| Disaster recovery | Manual | Auto | Yes | 5/10 |
+| Data backup | Daily | Real-time | Yes | 6/10 |
+
+#### Maintainability
+| Aspect | Current | Target | Gap | Score |
+|--------|---------|--------|-----|-------|
+| Code modularity | Medium | High | Yes | 6/10 |
+| Documentation | Partial | Complete | Yes | 5/10 |
+| Test coverage | 70% | 85% | Yes | 7/10 |
+
+### Technical Debt Assessment
+| Item | Impact | Effort | Priority | Age |
+|------|--------|--------|----------|-----|
+| Legacy auth system | High | High | P1 | 2y |
+| Monolithic API | Medium | High | P2 | 1.5y |
+| Missing monitoring | Medium | Low | P1 | 1y |
+
+### Recommendations
+
+#### Immediate (0-3 months)
+1. [Recommendation 1]
+2. [Recommendation 2]
+
+#### Short-term (3-6 months)
+1. [Recommendation 1]
+2. [Recommendation 2]
+
+#### Long-term (6-12 months)
+1. [Recommendation 1]
+2. [Recommendation 2]
+
+### Decision Log
+| Decision | Rationale | Alternatives Considered | Date |
+|----------|-----------|------------------------|------|
+| [Decision 1] | [Why] | [Options] | [Date] |
+```
+
+## Integration with Extended Thinking
+
+For deep analysis tasks, use maximum thinking budget:
+
+```python
+response = client.messages.create(
+    model="claude-opus-4-5-20250514",
+    max_tokens=32000,
+    thinking={
+        "type": "enabled",
+        "budget_tokens": 25000  # Maximum budget for deep analysis
+    },
+    system="""You are a senior technical analyst performing a
+    comprehensive review. Use structured analysis templates and
+    document all findings systematically.""",
+    messages=[{
+        "role": "user",
+        "content": "Perform a security threat model for..."
+    }]
+)
+```
+
+## Best Practices
+
+1. **Use appropriate templates**: Match template to analysis type
+2. **Be systematic**: Follow the template structure completely
+3. **Quantify findings**: Use metrics and severity ratings
+4. **Prioritize actionable**: Focus on findings that can be fixed
+5. **Document evidence**: Link to specific code/logs/data
+6. **Track progress**: Update findings as they're addressed
+
+## See Also
+
+- [[extended-thinking]] - Enable deep reasoning capabilities
+- [[complex-reasoning]] - Reasoning frameworks
+- [[testing]] - Validation strategies
+- [[debugging]] - Issue investigation
