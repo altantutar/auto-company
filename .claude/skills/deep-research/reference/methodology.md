@@ -254,3 +254,131 @@ As results arrive:
 
    Record in methodology appendix:
    - What changed in outline
+   - Why it changed (evidence-driven reasons)
+   - What additional research was conducted (if any)
+
+**Quality Standards:**
+- Adaptation must be evidence-driven (cite specific sources that prompted change)
+- No more than 50% outline restructuring (if more needed, scope was severely mis scoped)
+- Retain original research question core (don't drift into different topic entirely)
+- New sections must have supporting evidence already gathered
+
+**Output:** Refined outline that accurately reflects evidence landscape, ready for synthesis
+
+**Anti-Pattern Warning:**
+- ❌ DON'T adapt outline based on speculation or "what would be interesting"
+- ❌ DON'T add sections without supporting evidence already in hand
+- ❌ DON'T completely abandon original research question
+- ✅ DO adapt when evidence clearly indicates better structure
+- ✅ DO document rationale for changes
+- ✅ DO stay within original topic scope
+
+---
+
+## Phase 5: SYNTHESIZE - Deep Analysis
+
+**Objective:** Connect insights and generate novel understanding
+
+**Activities:**
+1. Identify patterns across sources
+2. Map relationships between concepts
+3. Generate insights beyond source material
+4. Create conceptual frameworks
+5. Build argument structures
+6. Develop evidence hierarchies
+
+**Ultrathink Integration:** Use extended reasoning to explore non-obvious connections and second-order implications.
+
+**Output:** Synthesized understanding with insight generation
+
+---
+
+## Phase 6: CRITIQUE - Quality Assurance
+
+**Objective:** Rigorously evaluate research quality
+
+**Activities:**
+1. Review for logical consistency
+2. Check citation completeness
+3. Identify gaps or weaknesses
+4. Assess balance and objectivity
+5. Verify claims against sources
+6. Test alternative interpretations
+
+**Red Team Questions:**
+- What's missing?
+- What could be wrong?
+- What alternative explanations exist?
+- What biases might be present?
+- What counterfactuals should be considered?
+
+**Output:** Critique report with improvement recommendations
+
+---
+
+## Phase 7: REFINE - Iterative Improvement
+
+**Objective:** Address gaps and strengthen weak areas
+
+**Activities:**
+1. Conduct additional research for gaps
+2. Strengthen weak arguments
+3. Add missing perspectives
+4. Resolve contradictions
+5. Enhance clarity
+6. Verify revised content
+
+**Output:** Strengthened research with addressed deficiencies
+
+---
+
+## Phase 8: PACKAGE - Report Generation
+
+**Objective:** Deliver professional, actionable research
+
+**Activities:**
+1. Structure report with clear hierarchy
+2. Write executive summary
+3. Develop detailed sections
+4. Create visualizations (tables, diagrams)
+5. Compile full bibliography
+6. Add methodology appendix
+
+**Output:** Complete research report ready for use
+
+---
+
+## Advanced Features
+
+### Graph-of-Thoughts Reasoning
+
+Rather than linear thinking, branch into multiple reasoning paths:
+- Explore alternative framings in parallel
+- Pursue tangential leads that might be relevant
+- Merge insights from different branches
+- Backtrack and revise as new information emerges
+
+### Parallel Agent Deployment
+
+Use Task tool to spawn sub-agents for:
+- Parallel source retrieval
+- Independent verification paths
+- Competing hypothesis evaluation
+- Specialized domain analysis
+
+### Adaptive Depth Control
+
+Automatically adjust research depth based on:
+- Information complexity
+- Source availability
+- Time constraints
+- Confidence levels
+
+### Citation Intelligence
+
+Smart citation management:
+- Track provenance of every claim
+- Link to original sources
+- Assess source credibility
+- Handle conflicting sources
+- Generate proper bibliographies
