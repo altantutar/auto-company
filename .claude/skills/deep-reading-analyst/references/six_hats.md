@@ -236,3 +236,121 @@ Instead of [author's method], what if: [alternative]
 **Language:**
 - "We've covered..."
 - "The next step is..."
+- "In summary..."
+- "We need to focus on..."
+
+**In Content Analysis:**
+- Decide which hats to use when
+- Synthesize findings from all hats
+- Determine next steps
+- Plan learning strategy
+- Monitor the analysis process
+
+**Template:**
+```markdown
+## Analysis Process
+1. White: Gathered facts
+2. Red: Noted reactions  
+3. Black: Identified risks
+4. Yellow: Found value
+5. Green: Generated alternatives
+
+## Synthesis
+Combining all perspectives:
+- [Integrated insight]
+
+## Next Steps
+- [ ] Further research: [area]
+- [ ] Practical test: [action]
+- [ ] Deep dive: [topic]
+
+## Time Investment
+Worth [X] time because [reason]
+```
+
+**Important:** Blue hat organizes the other hats. It's the conductor.
+
+---
+
+## Usage Patterns
+
+### Quick Evaluation (15 min)
+White → Red → Yellow → Black → Blue
+
+### Deep Analysis (60 min)  
+White → Red → Black → Yellow → Green → Blue → (Revisit any hat) → Blue
+
+### Problem-Solving
+White → Red → Green → Yellow → Black → Green → Blue
+
+### Decision-Making
+White → Yellow → Black → Red → Blue
+
+## Rules of Engagement
+
+1. **One hat at a time** - Don't mix modes
+2. **Everyone wears same hat** - Parallel thinking (if group)
+3. **Separate person from hat** - You're not "the critical person," you're wearing black hat
+4. **Time-box** - Set limits per hat
+5. **Blue hat controls** - Decides sequence and timing
+
+## Common Mistakes
+
+❌ **Mixing hats** - "This is good (yellow) but risky (black)"
+✅ **Separate:** Yellow session: "This is good because X." Then Black session: "The risk is Y."
+
+❌ **Judging feelings** - "That's irrational" during red hat
+✅ **Accept feelings:** All emotions noted without judgment
+
+❌ **Weak yellow** - "I guess there's some value..."
+✅ **Genuine optimism:** Really find the good
+
+❌ **Staying too long** - 30 min per hat
+✅ **Move on:** 5-10 min per hat usually sufficient
+
+## Application to Reading
+
+**When to use which hat:**
+
+- **Understanding stage:** White (facts), Red (reactions)
+- **Evaluation stage:** Black (critique), Yellow (value)
+- **Application stage:** Green (ideas), Blue (synthesis)
+
+**Full Cycle:**
+1. White: What does the text actually say?
+2. Red: How do I feel about it?
+3. Black: What's wrong with it?
+4. Yellow: What's right with it?
+5. Green: What else could we do with this?
+6. Blue: So what? Now what?
+
+## Integration with Other Models
+
+- **After First Principles:** Use hats to evaluate rebuilt argument
+- **After Systems Mapping:** Use yellow/black on leverage points
+- **Before Critical Thinking:** Use red to surface biases
+- **During Synthesis:** Use blue to organize findings
+
+## Output Format
+
+```markdown
+# Six Hats Analysis: [Content Title]
+
+## 🎩 White: Facts
+[Objective data]
+
+## 🎩 Red: Feelings  
+[Emotional response]
+
+## 🎩 Black: Cautions
+[Risks and weaknesses]
+
+## 🎩 Yellow: Benefits
+[Value and opportunities]
+
+## 🎩 Green: Possibilities
+[Creative extensions]
+
+## 🎩 Blue: Conclusions
+[Synthesis and next steps]
+```
