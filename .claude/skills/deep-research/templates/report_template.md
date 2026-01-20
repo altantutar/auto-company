@@ -274,3 +274,141 @@ CITATION TRACKING (CRITICAL):
 
 ---
 
+## Recommendations
+
+<!-- Make this actionable and specific -->
+
+### Immediate Actions
+
+[3-5 specific actions the user should take NOW]
+
+1. **[Action Title]**
+   - What: [Specific action]
+   - Why: [Rationale based on findings]
+   - How: [Implementation steps]
+   - Timeline: [When to do this]
+
+2. **[Continue with similar detail...]**
+
+### Next Steps
+
+[3-5 actions for the near-term future (1-3 months)]
+
+1. **[Step Title]**
+   - [Similar detailed structure]
+
+### Further Research Needs
+
+[3-5 areas where additional research would be valuable]
+
+1. **[Research Topic]**
+   - What to investigate: [Specific question]
+   - Why it matters: [Connection to current findings]
+   - Suggested approach: [How to research it]
+
+---
+
+## Bibliography
+
+<!-- ============================================================================ -->
+<!-- CRITICAL: Generate COMPLETE bibliography with ALL sources cited in report   -->
+<!-- DO NOT use placeholders like "[8-75] Additional citations" or "etc."        -->
+<!-- DO NOT use "...continue..." or "[Continue with all sources...]"             -->
+<!-- EVERY citation [N] in report body MUST have corresponding entry here        -->
+<!-- If report cites [1]-[25], bibliography MUST contain all 25 complete entries -->
+<!-- Format: [N] Author/Organization (Year). "Title". Publication. URL           -->
+<!-- ============================================================================ -->
+
+[1] Author Name or Organization (2025). "Full Title of Article or Paper". Publication Name or Website. https://full-url.com (Retrieved: 2025-11-04)
+
+[2] Second Author (2024). "Second Article Title". Journal Name, Volume(Issue), pages. https://doi-or-url.com (Retrieved: 2025-11-04)
+
+<!-- Add ALL remaining citations [3] through [N] here -->
+<!-- Standard reports: 15-30 sources | Deep/UltraDeep: 30-50 sources -->
+<!-- Write each entry completely - NO ranges, NO "etc.", NO placeholders -->
+
+---
+
+## Appendix: Methodology
+
+### Research Process
+
+[2-3 paragraphs describing the research process in detail]
+
+**Phase Execution:**
+- Phase 1 (SCOPE): [What was done]
+- Phase 2 (PLAN): [What was done]
+- Phase 3 (RETRIEVE): [What was done]
+- [Continue for all phases executed]
+
+### Sources Consulted
+
+**Total Sources:** [Number]
+
+**Source Types:**
+- Academic journals: [Number]
+- Industry reports: [Number]
+- News articles: [Number]
+- Government/regulatory: [Number]
+- Documentation: [Number]
+- [Other categories]
+
+**Geographic Coverage:**
+[If relevant, note geographic distribution of sources]
+
+**Temporal Coverage:**
+[Date range of sources, recency distribution]
+
+### Verification Approach
+
+[2-3 paragraphs explaining:]
+
+**Triangulation:**
+- How claims were verified across multiple sources
+- Minimum sources required per major claim: 3
+- How contradictions were handled
+
+**Credibility Assessment:**
+- How source quality was evaluated
+- Scoring system used (0-100)
+- Average credibility score: [Number]/100
+- Distribution: [High/medium/low source counts]
+
+**Quality Control:**
+- Validation checks performed
+- Issues found and corrected
+- Final quality metrics
+
+### Claims-Evidence Table
+
+<!-- Explicit mapping of major claims to supporting sources -->
+
+| Claim ID | Major Claim | Evidence Type | Supporting Sources | Confidence |
+|----------|-------------|---------------|-------------------|------------|
+| C1 | [First major claim from findings] | [Primary data / Meta-analysis / Expert opinion] | [1], [2], [3] | High / Medium / Low |
+| C2 | [Second major claim] | [Evidence type] | [4], [5], [6] | High / Medium / Low |
+| C3 | [Third major claim] | [Evidence type] | [7], [8] | High / Medium / Low |
+| ... | [Continue for all major claims] | ... | ... | ... |
+
+**Confidence Levels:**
+- **High**: 3+ independent sources, consistent findings, strong methodology
+- **Medium**: 2 sources OR single high-quality source with minor contradictions
+- **Low**: Single source OR significant contradictions in evidence
+
+---
+
+## Report Metadata
+
+**Research Mode:** [Quick/Standard/Deep/UltraDeep]
+**Total Sources:** [Number]
+**Word Count:** [Approximate count]
+**Research Duration:** [Time taken]
+**Generated:** [Date and time]
+**Validation Status:** [Passed with X warnings / Passed without warnings]
+
+---
+
+<!-- END OF TEMPLATE -->
+<!-- Remember: Write COMPREHENSIVE, DETAILED reports -->
+<!-- Target 2,000-5,000 words minimum, more for deep modes -->
+<!-- Include specific data, evidence, and analysis throughout -->
