@@ -251,3 +251,129 @@ LAUNCH WEEK
 □ Sales team notified
 □ Support team briefed
 
+POST-LAUNCH (T+30 days)
+□ Performance metrics tracked
+□ Customer feedback collected
+□ Issues addressed
+□ Learnings documented
+□ Optimization plan created
+```
+
+## Product-Led Growth
+
+### PLG Metrics
+
+```
+ACQUISITION
+├── Website visitors
+├── Sign-ups
+└── Activation rate
+
+ACTIVATION
+├── Time to value
+├── Aha moment reached
+└── Feature adoption
+
+RETENTION
+├── Daily/Weekly active users
+├── Feature stickiness
+└── Churn rate
+
+REVENUE
+├── Conversion rate (free → paid)
+├── Expansion revenue
+└── Net revenue retention
+
+REFERRAL
+├── Viral coefficient
+├── NPS
+└── Referral sign-ups
+```
+
+### PLG Flywheel
+
+```
+         ┌──────────────────────────┐
+         │                          │
+         ▼                          │
+    ┌─────────┐              ┌──────┴──────┐
+    │ Acquire │              │   Refer     │
+    │  Users  │              │   Others    │
+    └────┬────┘              └─────────────┘
+         │                          ▲
+         ▼                          │
+    ┌─────────┐              ┌──────┴──────┐
+    │ Activate│              │   Expand    │
+    │  Users  │──────────────│   Usage     │
+    └────┬────┘              └─────────────┘
+         │                          ▲
+         ▼                          │
+    ┌─────────┐              ┌──────┴──────┐
+    │ Engage  │──────────────│   Monetize  │
+    │  Users  │              │   Users     │
+    └─────────┘              └─────────────┘
+```
+
+## Business Modeling
+
+### Business Model Canvas
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ Key           │ Key           │ Value         │ Customer    │
+│ Partners      │ Activities    │ Propositions  │ Relationships│
+│               │               │               │             │
+│ [Who]         │ [What]        │ [Why]         │ [How]       │
+├───────────────┼───────────────┼───────────────┼─────────────┤
+│ Key           │               │               │ Customer    │
+│ Resources     │               │               │ Segments    │
+│               │               │               │             │
+│ [With what]   │               │               │ [For whom]  │
+├───────────────┴───────────────┴───────────────┴─────────────┤
+│ Cost Structure                │ Revenue Streams             │
+│                              │                              │
+│ [How much]                   │ [How]                        │
+└──────────────────────────────┴──────────────────────────────┘
+```
+
+### Unit Economics
+
+```
+LTV (Lifetime Value)
+= ARPU × Gross Margin × Customer Lifetime
+= $100/mo × 70% × 36 months = $2,520
+
+CAC (Customer Acquisition Cost)
+= Total Sales & Marketing / New Customers
+= $500,000 / 1,000 = $500
+
+LTV:CAC Ratio
+= $2,520 / $500 = 5.04:1 (Target: >3:1)
+
+CAC Payback
+= CAC / (ARPU × Gross Margin)
+= $500 / ($100 × 70%) = 7.1 months
+```
+
+## Reference Materials
+
+- `references/market_analysis.md` - Market research frameworks
+- `references/competitive_intel.md` - Competitive analysis methods
+- `references/gtm_playbook.md` - Go-to-market strategies
+- `references/plg_guide.md` - Product-led growth tactics
+
+## Scripts
+
+```bash
+# Market sizing calculator
+python scripts/market_sizing.py --segment enterprise --geo north_america
+
+# Competitive tracker
+python scripts/competitive_tracker.py --competitors comp1,comp2,comp3
+
+# GTM timeline generator
+python scripts/gtm_timeline.py --launch-date 2024-03-01
+
+# Unit economics calculator
+python scripts/unit_economics.py --arpu 100 --margin 0.7 --lifetime 36
+```
