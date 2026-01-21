@@ -219,3 +219,113 @@ Happy to discuss the implementation!
 - ✓ Be ready for tough questions
 - ✓ Respond thoughtfully to criticism
 - ✓ Don't ask for upvotes (ever)
+- ✓ Time it well (morning US)
+
+#### HN Avoid
+- ❌ Marketing speak
+- ❌ "AI-powered" without substance
+- ❌ Voting rings (will get you banned)
+- ❌ Complaining about downvotes
+
+---
+
+### Other Communities
+
+#### Discord Servers
+- Find servers related to your niche
+- Participate genuinely first
+- Check if #self-promotion channels exist
+- Don't DM spam
+
+#### Slack Communities
+- Many industries have Slack groups
+- Similar rules as Discord
+- Often more professional
+
+#### Facebook Groups
+- Still relevant for certain niches
+- B2B groups can be valuable
+- Follow group rules strictly
+
+#### Product-Specific Communities
+- Dev.to (developers)
+- Hashnode (developers)
+- Lobste.rs (tech)
+- Designer News (designers)
+- Growth Hackers (marketing)
+
+## Timing Strategy
+
+### Pre-Launch (2-4 weeks)
+- [ ] Join all relevant communities
+- [ ] Comment on 20+ posts
+- [ ] Build relationships
+- [ ] Save posts where you can share later
+
+### Launch Week
+- [ ] Soft mentions in comments
+- [ ] Help others, mention your launch naturally
+- [ ] Prepare posts for each platform
+
+### Launch Day
+- [ ] Space out community posts (not all at once)
+- [ ] Different post for each community
+- [ ] Monitor and respond quickly
+
+### Post-Launch
+- [ ] Share results and learnings
+- [ ] Thank communities
+- [ ] Continue participating
+
+## Community Post Checklist
+
+### Before Posting
+- [ ] Am I a recognized member of this community?
+- [ ] Have I read the rules?
+- [ ] Is self-promotion allowed?
+- [ ] Does my post provide value beyond promotion?
+- [ ] Is my post format appropriate?
+
+### After Posting
+- [ ] Monitoring for comments
+- [ ] Responding to all feedback
+- [ ] Thanking people for support
+- [ ] Not getting defensive about criticism
+
+## Output Format
+
+```
+COMMUNITY OUTREACH PLAN FOR: [Product Name]
+
+TARGET COMMUNITIES:
+
+1. Reddit
+   Subreddits: [List with member counts]
+   Pre-launch activity: [Status]
+   Post timing: [When]
+
+2. Indie Hackers
+   Groups: [Relevant groups]
+   Pre-launch activity: [Status]
+   Post timing: [When]
+
+3. Hacker News
+   Suitable: [Yes/No and why]
+   Post timing: [When]
+
+4. Other
+   [List other communities]
+
+POSTING SCHEDULE:
+- [Time]: [Platform] - [Subreddit/community]
+- [Time]: [Platform] - [Subreddit/community]
+- [Time]: [Platform] - [Subreddit/community]
+
+PRE-LAUNCH CHECKLIST:
+- [ ] [Community]: [X] comments, [X] karma
+- [ ] [Community]: [Status]
+- [ ] [Community]: [Status]
+
+POST DRAFTS:
+[Include customized drafts for each community]
+```
