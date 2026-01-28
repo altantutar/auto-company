@@ -374,3 +374,128 @@ Most likely: [...]
 ```
 
 ## Step 5: Knowledge Activation
+
+**Always end with:**
+
+```markdown
+## 🎯 Immediate Takeaways (Top 3)
+
+1. **[Insight 1]**
+   Why it matters: [Personal relevance]
+   One action: [Specific, time-bound]
+
+2. **[Insight 2]**
+   Why it matters: [Personal relevance]
+   One action: [Specific, time-bound]
+
+3. **[Insight 3]**
+   Why it matters: [Personal relevance]
+   One action: [Specific, time-bound]
+
+## 💡 Quick Win
+[One thing to try in next 24 hours - make it TINY and SPECIFIC]
+
+## 🔗 Next Steps
+
+**To deepen understanding:**
+[ ] Further reading: [If relevant]
+[ ] Apply framework X to topic Y
+[ ] Discuss with: [Who could add perspective]
+
+**To apply:**
+[ ] Experiment: [Test in real context]
+[ ] Teach: [Explain to someone else]
+[ ] Combine: [Mix with another idea]
+
+## 🧭 Thinking Models Used
+[Checkboxes showing which frameworks were applied]
+✅ SCQA ✅ 5W2H ✅ Critical Thinking ✅ Inversion
+□ Mental Models □ First Principles □ Systems □ Six Hats
+```
+
+## Quality Standards
+
+Every analysis must:
+- ✅ Stay faithful to original content (no misrepresentation)
+- ✅ Distinguish facts from opinions
+- ✅ Provide concrete examples
+- ✅ Apply frameworks appropriately (not force-fit)
+- ✅ Connect to user's context when possible
+- ✅ End with actionable steps
+- ✅ Cite specific sections (paragraph numbers, quotes)
+
+**Avoid:**
+- ❌ Overwhelming with all frameworks at once (respect depth level)
+- ❌ Academic jargon without explanation
+- ❌ Analysis without application
+- ❌ Copying text verbatim (always reword for understanding)
+- ❌ Using frameworks superficially (go deep, not wide)
+
+## Interaction Patterns
+
+**Progressive questioning:**
+- Understanding: "What do you think the author means by X?"
+- Critical: "Do you see any gaps in this argument?"
+- Application: "How might you use this in your work?"
+- Meta: "Which thinking model helped you most? Why?"
+
+**Adapt to signals:**
+- User asks "what's the main point?" → They want conciseness, use SCQA
+- User challenges your analysis → Lean into Critical Thinking + Inversion
+- User asks "how do I use this?" → Focus on application + First Principles
+- User wants "multiple perspectives" → Use Six Hats or Mental Models
+- User mentions "risks" → Apply Inversion Thinking
+- User asks "how does this connect?" → Use Systems Thinking
+
+**Framework suggestions during conversation:**
+- "Would you like me to apply [X framework] to this point?"
+- "This seems like a good place for inversion thinking - want to explore failure modes?"
+- "I notice several mental models at play here, want me to unpack them?"
+
+## Reference Materials
+
+### Core Frameworks (All Levels)
+- `references/scqa_framework.md` - Structure thinking (S-C-Q-A)
+- `references/5w2h_analysis.md` - Completeness check (7 questions)
+
+### Standard Level Frameworks
+- `references/critical_thinking.md` - Argument analysis
+- `references/inversion_thinking.md` - Risk and failure mode analysis
+
+### Deep Level Frameworks
+- `references/mental_models.md` - Multi-discipline model library
+- `references/first_principles.md` - Essence extraction method
+- `references/systems_thinking.md` - Relationship mapping
+- `references/six_hats.md` - Multi-perspective protocol
+
+### Output Formats
+- `references/output_templates.md` - Note format examples
+- `references/comparison_matrix.md` - Cross-article analysis
+
+## Advanced Usage
+
+### Custom Framework Combinations
+
+User can request specific combinations:
+- "Use SCQA + Inversion" - Structure with risk analysis
+- "Apply Mental Models + Systems Thinking" - Multi-lens system analysis
+- "5W2H + Critical Thinking" - Completeness + quality check
+
+### Iterative Deepening
+
+Start with Level 1, then ask:
+- "Want to go deeper on any part?"
+- "Which framework would be most valuable here?"
+- "Should we do an inversion analysis of this solution?"
+
+### Domain-Specific Optimizations
+
+**Business/Strategy**: SCQA + Mental Models (economics) + Inversion
+**Technical/Research**: 5W2H + First Principles + Critical Thinking
+**Personal Development**: Six Hats + Inversion + Systems
+**Decision-Making**: Mental Models + Inversion + SCQA
+**Creative**: Six Hats + First Principles + Mental Models
+
+---
+
+**Remember**: The goal is insight, not framework completion. Use frameworks as tools to reveal understanding, not as checklists to complete. Quality of thinking > quantity of frameworks applied.
