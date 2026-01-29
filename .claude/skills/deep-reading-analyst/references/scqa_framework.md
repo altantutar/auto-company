@@ -373,3 +373,127 @@ With corresponding solutions...
 Logical completeness:
 ✅ S→C: Sharp contrast, creates suspense
 ✅ C→Q: Naturally leads to "why"
+✅ Q→A: Answer highly targeted
+
+Quality scoring:
+- S: 4/5 (objective but could focus more)
+- C: 5/5 (data-driven, creates urgency)
+- Q: 4/5 (implicit question, should state explicitly)
+- A: 4/5 (practical but needs more validation)
+
+Improvement suggestions:
+Explicitly state Q after C, don't let readers guess
+```
+
+## Integration with Other Frameworks
+
+### SCQA + Pyramid Principle
+
+```markdown
+# Structured Expression
+
+SCQA: Set problem framework
+├── S-C-Q: Introduce core question
+└── A: Pyramid structure expansion
+    ├── Point 1
+    │   ├── Support 1.1
+    │   └── Support 1.2
+    ├── Point 2
+    └── Point 3
+```
+
+### SCQA + Critical Thinking
+
+```markdown
+# Deep Analysis
+
+Layer 1: SCQA identifies argument structure
+Layer 2: Critical thinking evaluates each part
+- Is S objective?
+- Is C real?
+- Is Q reasonable?
+- Is A effective?
+```
+
+### SCQA + 5W2H
+
+```markdown
+# Completeness Check
+
+SCQA: Understand overall structure
+5W2H: Check detail completeness
+- Is S's background sufficient (When, Where)?
+- Is C's problem clear (What, Why)?
+- Is A's solution feasible (How, How much, Who)?
+```
+
+## Common Questions
+
+### Q1: What if article lacks obvious SCQA structure?
+
+A: Proactive reconstruction
+```markdown
+Even if article is messy, you can:
+1. Extract information fragments
+2. Categorize into SCQA buckets
+3. Identify missing pieces
+4. Reorganize understanding
+```
+
+### Q2: Hard to distinguish S from C?
+
+A: Key is "stability vs. change"
+```markdown
+S: Stable background, mutually agreed
+C: Change or problem disrupting balance
+
+Test method:
+- If you remove this sentence, does problem still exist?
+  - Yes → Likely C
+  - No → Likely S
+```
+
+### Q3: Article has multiple SCQAs?
+
+A: Layered analysis
+```markdown
+Overall SCQA: Entire article
+Sub-SCQAs: Each section
+
+Example:
+Overall: S-C-Q-A
+└── Section 1: S1-C1-Q1-A1
+└── Section 2: S2-C2-Q2-A2
+```
+
+## Practice Exercises
+
+### Exercise 1: Daily SCQA Deconstruction
+Choose one article, spend 10 minutes identifying SCQA
+
+### Exercise 2: Elevator Pitch
+Use 30 seconds to introduce any topic in SCQA structure:
+- 5 sec: S
+- 10 sec: C
+- 5 sec: Q
+- 10 sec: A
+
+### Exercise 3: Comparative Reading
+For 2-3 articles on same topic, compare SCQA differences
+
+### Exercise 4: Restructure Writing
+Take your own writing, reorganize using SCQA
+
+## Key Quotes
+
+> "Structure creates clarity. Clarity creates impact."
+
+> "Good structure makes complex ideas simple.
+> Bad structure makes simple ideas complex."
+
+> "SCQA doesn't limit creativity—
+> it makes your ideas easier to understand."
+
+---
+
+**Remember**: SCQA is a thinking tool, not a writing formula. Use flexibly to serve clarity and deep understanding.
