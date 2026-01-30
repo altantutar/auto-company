@@ -373,3 +373,128 @@ Sales Efficiency = (New ARR in Quarter) ÷ (S&M Spend in Prior Quarter)
 - <0.75: Inefficient, unprofitable growth
 - 0.75-1.0: Acceptable
 - >1.0: Efficient, profitable growth
+- >1.5: Highly efficient
+
+**Example**:
+- Q1 S&M spend: $200k
+- Q2 new ARR: $180k
+- Sales Efficiency = $180k / $200k = 0.9 (acceptable)
+
+---
+
+## 6. Advanced Topics
+
+### Net Revenue Retention (NRR)
+
+**Formula**:
+
+```
+NRR = (Starting ARR + Expansion - Contraction - Churn) ÷ Starting ARR
+```
+
+**Components**:
+- **Starting ARR**: Revenue from cohort at start of period
+- **Expansion**: Upsells, cross-sells, usage growth
+- **Contraction**: Downgrades, reduced usage
+- **Churn**: Customers leaving
+
+**Example**:
+- Starting ARR (Jan 2024 cohort): $100k
+- Expansion (upsells): +$25k
+- Contraction (downgrades): -$5k
+- Churn (lost customers): -$10k
+- Ending ARR: $100k + $25k - $5k - $10k = $110k
+- NRR = $110k / $100k = **110%**
+
+**Benchmarks**:
+- <100%: Shrinking revenue from existing customers (bad)
+- 100-110%: Stable, small growth from expansion
+- 110-120%: Good, strong expansion
+- >120%: Excellent, revenue grows even without new customers
+
+**Why NRR matters**: >100% NRR means you can grow revenue without adding new customers. Powerful compounding effect.
+
+### Unit Economics for Different Stages
+
+**Early-stage (finding product-market fit)**:
+- Target: LTV/CAC >2:1
+- Focus: Find repeatable, scalable channels
+- Acceptable: Higher CAC, longer payback while iterating
+
+**Growth-stage (scaling)**:
+- Target: LTV/CAC >3:1, Payback <12 months
+- Focus: Optimize channels, improve retention
+- Need: Efficient growth to justify increasing spend
+
+**Late-stage (mature)**:
+- Target: LTV/CAC >4:1, Payback <6 months, NRR >110%
+- Focus: Profitability, margin expansion
+- Optimize: Every channel, reduce CAC, maximize LTV
+
+### Multi-Product Unit Economics
+
+**Challenge**: Customers may buy multiple products. How to attribute value?
+
+**Approaches**:
+
+1. **Customer-level LTV**: Sum revenue across all products purchased by customer.
+   - LTV = Total revenue from customer × Margin
+
+2. **Product-level LTV**: Track LTV separately per product.
+   - Useful if products have different margins, retention patterns.
+
+3. **Blended LTV**: Weight by product mix.
+   - Blended LTV = (% Product A × LTV_A) + (% Product B × LTV_B) + ...
+
+**Example** (SaaS with two tiers):
+- 70% subscribe to Basic ($50/month, LTV $800)
+- 30% subscribe to Pro ($150/month, LTV $2,400)
+- Blended LTV = (0.7 × $800) + (0.3 × $2,400) = $560 + $720 = $1,280
+
+### Sensitivity Analysis
+
+Test how changes to assumptions impact unit economics.
+
+**Variables to test**:
+- Churn rate (+/- 1-2%)
+- ARPU (+/- 10-20%)
+- CAC (+/- 10-20%)
+- Gross margin (+/- 5-10%)
+
+**Example**:
+- Base case: LTV $1,000, CAC $250, Ratio 4:1
+- Churn increases 5% → 4%: LTV drops to $800, Ratio 3.2:1 (still acceptable)
+- Churn increases 5% → 6%: LTV drops to $667, Ratio 2.7:1 (marginal)
+- CAC increases 20% to $300: Ratio drops to 3.3:1 (still good)
+
+**Insight**: Unit economics are sensitive to churn. Small churn increases significantly hurt LTV.
+
+### Competitive Dynamics
+
+**CAC increases over time** due to:
+- Market saturation (easier customers already acquired)
+- Competition (bidding wars on ads, higher sales/marketing costs)
+- Channel exhaustion (diminishing returns on channels)
+
+**Strategies**:
+1. **Build moats**: Brand, network effects, switching costs reduce reliance on paid acquisition.
+2. **Product-led growth**: Virality, word-of-mouth, organic growth reduce CAC.
+3. **Expand TAM**: Enter new markets, segments to access untapped customers.
+4. **Improve conversion**: Better product, messaging, sales process → more customers from same spend.
+
+**Example** (competitive landscape):
+- Year 1: CAC $200, LTV $1,000, Ratio 5:1
+- Year 3: CAC $350 (competition), LTV $1,200 (retention improvements), Ratio 3.4:1
+- Year 5: CAC $500, LTV $1,500, Ratio 3:1
+
+**Insight**: Even with rising CAC, improving LTV (retention, upsells) maintains healthy ratio.
+
+## Key Takeaways
+
+1. **CAC must be fully-loaded**: Include all S&M costs (salaries, tools, overhead). Break down by channel.
+2. **LTV requires cohort data**: Track retention by cohort, extrapolate conservatively. Don't rely on averages.
+3. **Contribution margin sets ceiling**: Need high margin (>60% SaaS, >40% ecommerce) for viable economics.
+4. **Both ratio and payback matter**: 5:1 ratio with 24-month payback < 3:1 with 6-month payback (cash efficiency).
+5. **Retention > Acquisition**: Small churn improvements have exponential LTV impact. Prioritize retention.
+6. **Channel-level analysis**: Blended metrics hide truth. Analyze CAC/LTV per channel, optimize spend accordingly.
+7. **Update quarterly**: Unit economics evolve with scale, market changes, competition. Re-calculate regularly.
