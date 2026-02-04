@@ -411,3 +411,140 @@ jobs:
 deploy:
   script:
     - echo $DATABASE_URL
+  variables:
+    DATABASE_URL: $DATABASE_URL
+  only:
+    - main
+```
+
+### Security Best Practices
+
+```yaml
+# ✅ Good: Secrets only in secure env
+steps:
+  - run: npm run deploy
+    env:
+      SECRET: ${{ secrets.MY_SECRET }}
+
+# ❌ Bad: Secret in command line (logged)
+steps:
+  - run: npm run deploy --secret=${{ secrets.MY_SECRET }}
+
+# ❌ Bad: Echoing secrets
+steps:
+  - run: echo ${{ secrets.MY_SECRET }}
+```
+
+---
+
+## Application Patterns
+
+### Config Module
+
+```typescript
+// config/index.ts
+import { z } from 'zod';
+
+const configSchema = z.object({
+  database: z.object({
+    url: z.string().url()
+  }),
+  jwt: z.object({
+    secret: z.string().min(32),
+    expiresIn: z.string().default('15m')
+  }),
+  redis: z.object({
+    url: z.string().url()
+  })
+});
+
+type Config = z.infer<typeof configSchema>;
+
+let config: Config;
+
+export async function loadConfig(): Promise<Config> {
+  if (config) return config;
+  
+  const raw = {
+    database: {
+      url: process.env.DATABASE_URL
+    },
+    jwt: {
+      secret: process.env.JWT_SECRET,
+      expiresIn: process.env.JWT_EXPIRES_IN
+    },
+    redis: {
+      url: process.env.REDIS_URL
+    }
+  };
+  
+  config = configSchema.parse(raw);
+  return config;
+}
+
+export function getConfig(): Config {
+  if (!config) {
+    throw new Error('Config not loaded. Call loadConfig() first.');
+  }
+  return config;
+}
+```
+
+### Never Log Secrets
+
+```typescript
+// ❌ Bad: Logging sensitive data
+console.log('Connecting with:', databaseUrl);
+console.log('User login:', { email, password });
+
+// ✅ Good: Sanitized logging
+console.log('Connecting to database...');
+console.log('User login:', { email, password: '[REDACTED]' });
+
+// Helper function
+function sanitizeForLogging(obj: Record<string, unknown>): Record<string, unknown> {
+  const sensitiveKeys = ['password', 'secret', 'token', 'key', 'authorization'];
+  const sanitized = { ...obj };
+  
+  for (const key of Object.keys(sanitized)) {
+    if (sensitiveKeys.some(k => key.toLowerCase().includes(k))) {
+      sanitized[key] = '[REDACTED]';
+    }
+  }
+  
+  return sanitized;
+}
+```
+
+---
+
+## Audit Checklist
+
+### Code Review
+
+- [ ] No secrets in source code
+- [ ] No secrets in comments
+- [ ] .env files in .gitignore
+- [ ] No secrets in error messages
+- [ ] No secrets in logs
+
+### Repository
+
+- [ ] Pre-commit hooks configured
+- [ ] Git history scanned for secrets
+- [ ] .gitignore includes secret patterns
+- [ ] GitHub secret scanning enabled
+
+### Infrastructure
+
+- [ ] Secrets in secret manager (not env vars on host)
+- [ ] Rotation policy defined
+- [ ] Access audit logging enabled
+- [ ] Least privilege access
+
+### CI/CD
+
+- [ ] Secrets not printed in logs
+- [ ] Secrets masked in output
+- [ ] Protected branches for secrets
+- [ ] No secrets in build artifacts
