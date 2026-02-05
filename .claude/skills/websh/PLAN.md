@@ -376,3 +376,128 @@ news.ycombinator.com> ls
 
 ### Phase 1: Core shell
 
+1. **SKILL.md** — Activation triggers, command routing
+   - Activate on: `websh`, `web shell`, URLs in shell context
+   - Route to shell.md for execution
+
+2. **shell.md** — Shell semantics
+   - Embodiment instructions
+   - Command parsing
+   - State management
+   - Output formatting
+
+3. **commands.md** — Command reference
+   - Detailed syntax for each command
+   - Examples
+   - Piping behavior
+
+4. **state/cache.md** — Cache management
+   - Fetch and store
+   - **Iterative extraction prompt** (the prompt that drives haiku's loop)
+   - Index management
+   - Graceful degradation (commands work before extraction completes)
+   - Expiration/refresh
+
+5. **help.md** — User documentation
+   - Getting started
+   - Command cheatsheet
+   - Examples
+
+### Phase 2: Extensions
+
+- Form interaction
+- JavaScript-rendered pages (via browser tools if available)
+- API mounting
+- Diff/watch commands
+
+---
+
+## Example Session
+
+```
+$ websh
+
+┌─────────────────────────────────────┐
+│          ◇ websh ◇                  │
+│     A shell for the web             │
+└─────────────────────────────────────┘
+
+~> cd https://news.ycombinator.com
+
+fetching... cached
+navigated to news.ycombinator.com
+
+news.ycombinator.com> ls | head 5
+[0] Show HN: I built a tool for...
+[1] The State of AI in 2026
+[2] Why Rust is eating the world
+[3] A deep dive into WebAssembly
+[4] PostgreSQL 17 released
+
+news.ycombinator.com> grep "AI"
+[1] The State of AI in 2026
+[7] AI agents are coming for your job
+[12] OpenAI announces GPT-5
+
+news.ycombinator.com> follow 1
+
+fetching... cached
+navigated to news.ycombinator.com/item?id=...
+
+news.ycombinator.com/item> cat .title
+The State of AI in 2026
+
+news.ycombinator.com/item> cat .comment | head 3
+[0] Great article, but I disagree with...
+[1] This matches what I've seen at...
+[2] The author missed the point about...
+
+news.ycombinator.com/item> back
+
+news.ycombinator.com> bookmark hn
+
+Bookmarked: hn → https://news.ycombinator.com
+
+news.ycombinator.com> stat
+URL:      https://news.ycombinator.com
+Title:    Hacker News
+Fetched:  2026-01-24T10:30:00Z (5 min ago)
+Links:    30
+Size:     45 KB
+```
+
+---
+
+## Open Questions
+
+1. **JS-rendered pages**: Many sites require JavaScript. Options:
+   - Fail gracefully with helpful message
+   - Integrate with browser automation tools if available
+   - Use APIs where possible (e.g., Twitter/X API vs scraping)
+
+2. **Authentication**: How to handle logged-in sessions?
+   - Cookie import from browser?
+   - Manual header setting?
+
+3. **Rate limiting**: Should websh rate-limit fetches automatically?
+
+4. **Cache expiration**: TTL-based? Manual refresh only?
+
+---
+
+## Next Steps
+
+1. Create SKILL.md with activation triggers
+2. Write shell.md with core embodiment semantics
+3. Write commands.md with command grammar
+4. Write state/cache.md with caching logic
+5. Write help.md for users
+6. Test with real URLs
+
+---
+
+## Inspiration
+
+- Unix shell philosophy (small tools, pipes, text streams)
+- OpenProse VM pattern (embodiment, state files)
+- The original tweet: "Is there a shell for the web?"
