@@ -788,3 +788,161 @@ jobs -r              # running only
 jobs -s              # stopped only
 ```
 
+**Output:**
+```
+[1]  + running     cd https://example.com &
+[2]  - extracting  follow 3 &
+[3]    watching    watch https://status.com
+```
+
+---
+
+### `kill`
+
+Cancel a background task.
+
+**Syntax:**
+```
+kill <pid>
+kill %<job-number>
+kill -9 <pid>        # force kill
+killall watch        # kill all watch processes
+```
+
+---
+
+### `wait`
+
+Wait for background task to complete.
+
+**Syntax:**
+```
+wait                 # wait for all
+wait <pid>           # wait for specific
+wait %<job>          # wait for job number
+```
+
+---
+
+### `bg` / `fg`
+
+Move jobs to background/foreground.
+
+**Syntax:**
+```
+bg %<job>            # continue job in background
+fg %<job>            # bring job to foreground
+```
+
+---
+
+### `&` (background operator)
+
+Run command in background.
+
+**Syntax:**
+```
+cd https://example.com &
+watch https://status.com &
+```
+
+---
+
+### `nohup`
+
+Run command immune to hangups.
+
+**Syntax:**
+```
+nohup watch https://example.com &
+```
+
+---
+
+## Environment & Auth
+
+### `env`
+
+Show current environment (headers, cookies, settings).
+
+**Syntax:**
+```
+env                  # all variables
+env | grep COOKIE    # filter
+```
+
+**Output:**
+```
+USER_AGENT=websh/1.0
+ACCEPT=text/html
+COOKIE_session=abc123
+HEADER_Authorization=Bearer xyz
+TIMEOUT=30
+RATE_LIMIT=10/min
+```
+
+---
+
+### `export`
+
+Set environment variable (headers, cookies).
+
+**Syntax:**
+```
+export VAR=value
+export HEADER_X-Custom=value
+export COOKIE_session=abc123
+export USER_AGENT="Custom Agent"
+export TIMEOUT=60
+```
+
+**Examples:**
+```
+export HEADER_Authorization="Bearer mytoken"
+export COOKIE_session="abc123"
+export USER_AGENT="Mozilla/5.0..."
+```
+
+**Crawl settings:**
+```
+export EAGER_CRAWL=true              # enable/disable prefetching
+export CRAWL_DEPTH=2                 # layers deep to prefetch
+export CRAWL_SAME_DOMAIN=true        # only prefetch same-domain links
+export CRAWL_MAX_PER_PAGE=20         # max links per page
+export CRAWL_MAX_CONCURRENT=5        # parallel fetches
+export CRAWL_DELAY_MS=200            # rate limit delay
+```
+
+---
+
+### `unset`
+
+Remove environment variable.
+
+**Syntax:**
+```
+unset VAR
+unset HEADER_Authorization
+unset COOKIE_session
+```
+
+---
+
+### `whoami`
+
+Show logged-in identity (if detectable).
+
+**Syntax:**
+```
+whoami
+whoami -v            # verbose (show how detected)
+```
+
+**Output:**
+```
+@deepfates (detected from: meta tag, cookie)
+```
+
+Or:
+```
+(not logged in)
