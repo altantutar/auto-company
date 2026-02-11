@@ -712,3 +712,145 @@ Context preservation ensures coherence across continuation boundaries.
 **Writing Standards (Critical):**
 - **Narrative-driven**: Write in flowing prose with complete sentences that build understanding progressively
 - **Precision**: Choose each word deliberately - every word must carry intention
+- **Economy**: Eliminate fluff, unnecessary adjectives, fancy grammar
+- **Clarity**: Use precise technical terms, avoid ambiguity. Embed exact numbers in sentences, not bullets
+- **Directness**: State findings clearly without embellishment
+- **Signal-to-noise**: High information density, respect reader's time
+- **Bullet discipline**: Use bullets only for distinct lists (products, companies, steps). Default to prose paragraphs
+- **Examples of precision**:
+  - Bad: "significantly improved outcomes" → Good: "reduced mortality 23% (p<0.01)"
+  - Bad: "several studies suggest" → Good: "5 RCTs (n=1,847) show"
+  - Bad: "potentially beneficial" → Good: "increased biomarker X by 15%"
+  - Bad: "• Market: $2.4B" → Good: "The market reached $2.4 billion in 2023, driven by consumer demand [1]."
+
+**Quality gates (enforced by validator):**
+- Minimum 2,000 words (standard mode)
+- Average credibility score >60/100
+- 3+ sources per major claim
+- Clear facts vs. analysis distinction
+- All sections present and detailed
+
+---
+
+## Error Handling & Stop Rules
+
+**Stop immediately if:**
+- 2 validation failures on same error → Pause, report, ask user
+- <5 sources after exhaustive search → Report limitation, request direction
+- User interrupts/changes scope → Confirm new direction
+
+**Graceful degradation:**
+- 5-10 sources → Note in limitations, proceed with extra verification
+- Time constraint reached → Package partial results, document gaps
+- High-priority critique issue → Address immediately
+
+**Error format:**
+```
+⚠️ Issue: [Description]
+📊 Context: [What was attempted]
+🔍 Tried: [Resolution attempts]
+💡 Options:
+   1. [Option 1]
+   2. [Option 2]
+   3. [Option 3]
+```
+
+---
+
+## Quality Standards (Always Enforce)
+
+Every report must:
+- 10+ sources (document if fewer)
+- 3+ sources per major claim
+- Executive summary <250 words
+- Full citations with URLs
+- Credibility assessment
+- Limitations section
+- Methodology documented
+- No placeholders
+
+**Priority:** Thoroughness over speed. Quality > speed.
+
+---
+
+## Inputs & Assumptions
+
+**Required:**
+- Research question (string)
+
+**Optional:**
+- Mode (quick/standard/deep/ultradeep)
+- Time constraints
+- Required perspectives/sources
+- Output format
+
+**Assumptions:**
+- User requires verified, citation-backed information
+- 10-50 sources available on topic
+- Time investment: 5-45 minutes
+
+---
+
+## When to Use / NOT Use
+
+**Use when:**
+- Comprehensive analysis (10+ sources needed)
+- Comparing technologies/approaches/strategies
+- State-of-the-art reviews
+- Multi-perspective investigation
+- Technical decisions
+- Market/trend analysis
+
+**Do NOT use:**
+- Simple lookups (use WebSearch)
+- Debugging (use standard tools)
+- 1-2 search answers
+- Time-sensitive quick answers
+
+---
+
+## Scripts (Offline, Python stdlib only)
+
+**Location:** `./scripts/`
+
+- **research_engine.py** - Orchestration engine
+- **validate_report.py** - Quality validation (8 checks)
+- **citation_manager.py** - Citation tracking
+- **source_evaluator.py** - Credibility scoring (0-100)
+
+**No external dependencies required.**
+
+---
+
+## Progressive References (Load On-Demand)
+
+**Do not inline these - reference only:**
+- [Complete Methodology](./reference/methodology.md) - 8-phase details
+- [Report Template](./templates/report_template.md) - Output structure
+- [README](./README.md) - Usage docs
+- [Quick Start](./QUICK_START.md) - Fast reference
+- [Competitive Analysis](./COMPETITIVE_ANALYSIS.md) - vs OpenAI/Gemini
+
+**Context Management:** Load files on-demand for current phase only. Do not preload all content.
+
+---
+
+<!-- STATIC CONTEXT BLOCK END -->
+<!-- ⚡ Above content is cacheable (>1024 tokens, static) -->
+<!-- 📝 Below: Dynamic content (user queries, retrieved data, generated reports) -->
+<!-- This structure enables 85% latency reduction via prompt caching -->
+
+---
+
+## Dynamic Execution Zone
+
+**User Query Processing:**
+[User research question will be inserted here during execution]
+
+**Retrieved Information:**
+[Search results and sources will be accumulated here]
+
+**Generated Analysis:**
+[Findings, synthesis, and report content generated here]
+
+**Note:** This section remains empty in the skill definition. Content populated during runtime only.
