@@ -58,7 +58,7 @@ function Invoke-WslCommand {
 function Write-AutoLoopEnv {
     param(
         [Parameter(Mandatory = $true)][string]$RepoWin,
-        [Parameter(Mandatory = $true)][string[]]$EnvLines
+        [string[]]$EnvLines = @()
     )
 
     $envFile = Join-Path $RepoWin ".auto-loop.env"
@@ -114,6 +114,17 @@ if (-not (Test-Path $awakeScript)) {
 if ($LASTEXITCODE -ne 0) {
     Write-Error "Daemon started, but awake guardian failed to start. System sleep is not protected."
     exit 2
+}
+
+$anchorScript = Join-Path $repoWin "scripts\\windows\\wsl-anchor-win.ps1"
+if (-not (Test-Path $anchorScript)) {
+    throw "Missing WSL anchor script: $anchorScript"
+}
+
+& $anchorScript -Action start -Distro $Distro -RepoWsl $repoWsl
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Daemon started, but WSL anchor failed to start. Background persistence may be unstable."
+    exit 3
 }
 
 Write-Host ""

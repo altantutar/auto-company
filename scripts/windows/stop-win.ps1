@@ -73,4 +73,12 @@ if (Test-Path $awakeScript) {
     }
 }
 
+$anchorScript = Join-Path $repoWin "scripts\\windows\\wsl-anchor-win.ps1"
+if (Test-Path $anchorScript) {
+    & $anchorScript -Action stop -Distro $Distro -RepoWsl $repoWsl
+    if ($LASTEXITCODE -ne 0) {
+        Write-Warning "WSL anchor reported a non-zero exit while stopping."
+    }
+}
+
 exit 0

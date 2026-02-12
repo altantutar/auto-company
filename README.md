@@ -2,121 +2,133 @@
 
 # Auto Company
 
-**全自主 AI 公司，24/7 不停歇运行**
+**A fully autonomous AI company running 24/7**
 
-14 个 AI Agent，每个都是该领域世界顶级专家的思维分身。
-自主构思产品、做决策、写代码、部署上线、搞营销。没有人类参与。
+14 AI agents, each modeled after world-class experts in their domain.
+They ideate products, make decisions, write code, deploy, and market - without human intervention.
 
-基于 [Codex CLI](https://www.npmjs.com/package/@openai/codex) 驱动（macOS 原生 + Windows/WSL）。
+Powered by [Codex CLI](https://www.npmjs.com/package/@openai/codex) (macOS native + Windows/WSL).
 
-[![macOS](https://img.shields.io/badge/平台-macOS-blue)](#依赖)
-[![Windows WSL](https://img.shields.io/badge/平台-Windows%20WSL-blue)](#windows-wsl-快速开始)
-[![Codex CLI](https://img.shields.io/badge/驱动-Codex%20CLI-orange)](https://www.npmjs.com/package/@openai/codex)
+[![macOS](https://img.shields.io/badge/Platform-macOS-blue)](#dependencies)
+[![Windows WSL](https://img.shields.io/badge/Platform-Windows%20WSL-blue)](#windows-wsl-quick-start)
+[![Codex CLI](https://img.shields.io/badge/Engine-Codex%20CLI-orange)](https://www.npmjs.com/package/@openai/codex)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](#license)
-[![Status](https://img.shields.io/badge/状态-实验中-red)](#%EF%B8%8F-免责声明)
+[![Status](https://img.shields.io/badge/Status-Experimental-red)](#disclaimer)
 
-> **⚠️ 实验项目** — 还在测试中，能跑但不一定稳定。  
-> macOS 使用 launchd；Windows 使用 WSL systemd --user + PowerShell 入口。
+> **Experimental project** - still under active testing. It runs, but stability is not guaranteed.  
+> macOS uses launchd; Windows uses WSL systemd --user + PowerShell entry scripts.
 
 </div>
 
 ---
 
-## 这是什么？
+[中文版本](README-ZH.md)
 
-你启动一个循环。AI 团队醒来，读取共识记忆，决定干什么，组建 3-5 人小队，执行任务，更新共识记忆，然后睡一觉。接着又醒来。如此往复，永不停歇。
+## Dashboard Preview
+
+![Auto Company Dashboard](presentation/dashboard-showcase.png)
+
+## What Is This?
+
+You start a loop. The AI team wakes up, reads shared consensus memory, decides what to do, forms a 3-5 person squad, executes, updates consensus memory, then sleeps briefly. Then it repeats.
 
 ```
-launchd (崩溃自重启)
-  └── scripts/core/auto-loop.sh (永续循环)
-        ├── 读 PROMPT.md + consensus.md
-        ├── codex exec (驱动一个工作周期)
-        │   ├── 读 CLAUDE.md (公司章程 + 安全红线)
-        │   ├── 读 .claude/skills/team/SKILL.md (组队方法)
-        │   ├── 组建 Agent Team (3-5 人)
-        │   ├── 执行：调研、写码、部署、营销
-        │   └── 更新 memories/consensus.md (传递接力棒)
-        ├── 失败处理: 限额等待 / 熔断保护 / consensus 回滚
-        └── sleep → 下一轮
+daemon (launchd / systemd --user, auto-restart on crash)
+  └── scripts/core/auto-loop.sh (continuous loop)
+        ├── reads PROMPT.md + consensus.md
+        ├── codex exec (runs one work cycle)
+        │   ├── reads CLAUDE.md (charter + guardrails)
+        │   ├── reads .claude/skills/team/SKILL.md (teaming method)
+        │   ├── forms an Agent Team (3-5 agents)
+        │   ├── executes: research, coding, deploy, marketing
+        │   └── updates memories/consensus.md (handoff baton)
+        ├── failure handling: rate-limit wait / circuit breaker / consensus rollback
+        └── sleep -> next cycle
 ```
 
-每个周期是一次独立的 `codex exec` 调用。`memories/consensus.md` 是唯一的跨周期状态——类似接力赛传棒。
+Each cycle is an independent `codex exec` call. `memories/consensus.md` is the only cross-cycle state.
 
-## 团队阵容（14 人）
+## Where To Start (By Platform)
 
-不是"你是一个开发者"，而是"你是 DHH"——用真实传奇人物激活 LLM 的深层知识。
+- Windows users: start from [Windows (WSL) Quick Start](#windows-wsl-quick-start), then read [`docs/windows-setup.md`](docs/windows-setup.md)
+- macOS users: start from [macOS Quick Start](#macos-quick-start), then see [Command Quick Reference](#command-quick-reference-by-platform)
 
-| 层级 | 角色 | 专家 | 核心能力 |
+## Team Lineup (14 Agents)
+
+This is not "you are a generic developer". It is "you are DHH" style role prompting with real expert mental models.
+
+| Layer | Role | Expert Persona | Core Strength |
 |------|------|------|----------|
-| **战略** | CEO | Jeff Bezos | PR/FAQ、飞轮效应、Day 1 心态 |
-| | CTO | Werner Vogels | 为失败而设计、API First |
-| | 逆向思考 | Charlie Munger | 逆向思维、Pre-Mortem、心理误判清单 |
-| **产品** | 产品设计 | Don Norman | 可供性、心智模型、以人为本 |
-| | UI 设计 | Matías Duarte | Material 隐喻、Typography 优先 |
-| | 交互设计 | Alan Cooper | Goal-Directed Design、Persona 驱动 |
-| **工程** | 全栈开发 | DHH | 约定优于配置、Majestic Monolith |
-| | QA | James Bach | 探索性测试、Testing ≠ Checking |
-| | DevOps/SRE | Kelsey Hightower | Serverless 优先、自动化一切 |
-| **商业** | 营销 | Seth Godin | 紫牛、许可营销、最小可行受众 |
-| | 运营 | Paul Graham | Do Things That Don't Scale、拉面盈利 |
-| | 销售 | Aaron Ross | 可预测收入、漏斗思维 |
-| | CFO | Patrick Campbell | 基于价值定价、单位经济学 |
-| **情报** | 调研分析 | Ben Thompson | Aggregation Theory、价值链分析 |
+| **Strategy** | CEO | Jeff Bezos | PR/FAQ, flywheel thinking, Day 1 mindset |
+| | CTO | Werner Vogels | Design for failure, API-first architecture |
+| | Inversion | Charlie Munger | Inversion, pre-mortems, misjudgment checklist |
+| **Product** | Product Design | Don Norman | Affordance, mental models, human-centered design |
+| | UI Design | Matias Duarte | Material metaphor, typography-first design |
+| | Interaction Design | Alan Cooper | Goal-directed design, persona-driven decisions |
+| **Engineering** | Full-Stack | DHH | Convention over configuration, majestic monolith |
+| | QA | James Bach | Exploratory testing, testing is not checking |
+| | DevOps/SRE | Kelsey Hightower | Automation first, reliability discipline |
+| **Business** | Marketing | Seth Godin | Purple cow, permission marketing, smallest viable audience |
+| | Operations | Paul Graham | Do things that do not scale, ramen profitability |
+| | Sales | Aaron Ross | Predictable revenue, funnel systems |
+| | CFO | Patrick Campbell | Value-based pricing, unit economics |
+| **Intelligence** | Research Analyst | Ben Thompson | Aggregation theory, value chain analysis |
 
-另配 **30+ 技能**（深度调研、网页抓取、财务建模、SEO、安全审计、UX 审计……），任何 Agent 按需取用。
+Plus 30+ reusable skills (deep research, scraping, financial modeling, SEO, security audit, UX audit, etc.).
 
-## 快速开始
+## macOS Quick Start
 
 ```bash
-# 前提:
+# Prerequisites:
 # - macOS
-# - 已安装 Codex CLI 并完成登录
-# - 可用模型配额
+# - Codex CLI installed and authenticated
+# - Available model quota
 
-# 克隆
+# Clone
 git clone https://github.com/nicepkg/auto-company.git
 cd auto-company
 
-# 前台运行（直接看输出）
+# Foreground run (live output)
 make start
 
-# 或安装为守护进程（开机自启 + 崩溃自重启）
+# Or install daemon (auto-start + auto-restart)
 make install
 ```
 
-## Windows (WSL) 快速开始
+## Windows (WSL) Quick Start
 
-Windows 下推荐“PowerShell 命令入口 + WSL 执行内核”：
+Recommended architecture on Windows: PowerShell command entry + WSL execution core.
 
-1. 在 Windows 安装 WSL2 + Ubuntu。
-2. 在 WSL 中一次性安装运行依赖（`node`、`codex`、`jq`）。
-3. 在 PowerShell 直接运行 `*-win.ps1` 脚本。
+1. Install WSL2 + Ubuntu on Windows.
+2. Install runtime dependencies inside WSL (`node`, `codex`, `jq`).
+3. Run `*-win.ps1` scripts from PowerShell.
 
-详细步骤见：[`docs/windows-setup.md`](docs/windows-setup.md)
+Detailed guide: [`docs/windows-setup.md`](docs/windows-setup.md)
 
-常用 Windows 命令（在 `clone_win` 目录执行）：
+Common Windows commands (run in `clone_win`):
 
 ```powershell
-.\scripts\windows\start-win.ps1              # 启动 WSL daemon + 运行时防睡眠
-.\scripts\windows\status-win.ps1             # 查看 guardian + daemon + 循环状态
-.\scripts\windows\monitor-win.ps1            # 实时日志
-.\scripts\windows\last-win.ps1               # 上一轮完整输出
-.\scripts\windows\cycles-win.ps1             # 历史周期摘要
-.\scripts\windows\stop-win.ps1               # 停止循环
-.\scripts\windows\enable-autostart-win.ps1  # 可选：启用登录后自启
-.\scripts\windows\disable-autostart-win.ps1 # 关闭登录后自启
-.\scripts\windows\autostart-status-win.ps1  # 查看自启状态
+.\scripts\windows\start-win.ps1              # Start WSL daemon + awake guardian + WSL keepalive
+.\scripts\windows\status-win.ps1             # Guardian + keepalive + daemon + loop status
+.\scripts\windows\monitor-win.ps1            # Live logs
+.\scripts\windows\last-win.ps1               # Last full cycle output
+.\scripts\windows\cycles-win.ps1             # Cycle summary
+.\scripts\windows\stop-win.ps1               # Stop loop
+.\scripts\windows\dashboard-win.ps1          # Local web dashboard
+.\scripts\windows\enable-autostart-win.ps1  # Optional: enable start-on-login
+.\scripts\windows\disable-autostart-win.ps1 # Disable start-on-login
+.\scripts\windows\autostart-status-win.ps1  # Check autostart status
 ```
 
-### Windows 前置事项（每次开始前）
+### Windows Preconditions (Before Each Run)
 
-1. 只在 `clone_win/` 运行与提交，`clone/` 仅留档。
-2. WSL 内 `make`、`codex`、`jq` 可用。
-3. `codex` 已在 WSL 内登录且可调用。
-4. 建议 `command -v codex` 优先指向 WSL 本地路径（`/home/...`）。
-5. `clone/` 若在 WSL 下显示大量 `git status` 修改（多为换行差异）可忽略，不要在该目录提交。
+1. Develop and commit only in `clone_win/`; keep `clone/` as archive.
+2. Ensure `make`, `codex`, and `jq` are available inside WSL.
+3. Ensure `codex` is authenticated and runnable inside WSL.
+4. Prefer WSL-local Codex path (`/home/...`) from `command -v codex`.
+5. If `clone/` shows many WSL Git changes (usually line-ending noise), ignore and do not commit there.
 
-### Windows 推荐操作（标准）
+### Windows Recommended Flow
 
 ```powershell
 .\scripts\windows\start-win.ps1 -CycleTimeoutSeconds 1800 -LoopInterval 30
@@ -125,203 +137,204 @@ Windows 下推荐“PowerShell 命令入口 + WSL 执行内核”：
 .\scripts\windows\last-win.ps1
 .\scripts\windows\cycles-win.ps1
 .\scripts\windows\stop-win.ps1
+.\scripts\windows\dashboard-win.ps1
 ```
 
-推荐参数：
-- `CycleTimeoutSeconds` 建议 `900-1800`
-- `LoopInterval` 建议 `30-60`
+Suggested parameters:
+- `CycleTimeoutSeconds`: `900-1800`
+- `LoopInterval`: `30-60`
 
-可选自启：
-- 默认不自动启用
-- 按需执行 `.\scripts\windows\enable-autostart-win.ps1`
-- 若提示 `Access is denied`，请用“管理员 PowerShell”执行启用/关闭自启脚本
+Optional autostart:
+- Disabled by default
+- Enable with `.\scripts\windows\enable-autostart-win.ps1`
+- If you see `Access is denied`, retry in an elevated (Administrator) PowerShell
 
-### Windows + WSL 索引
+### Windows + WSL Index
 
-完整目录索引与脚本职责表请看：[`INDEX.md`](INDEX.md)
+For full file index and script responsibility matrix, see [`INDEX.md`](INDEX.md).
 
-### Chat-first 操作方式（推荐）
+### Chat-First Operation (Recommended)
 
-如果你不想手动执行命令，可以直接和 Codex 对话，由 Codex 在 Windows 侧代你调用 WSL。
+If you do not want to run commands manually, you can operate through Codex chat on Windows.
 
-可行性：
-- 可行。
-- 底层仍是同一套脚本链路：`scripts/windows/start-win.ps1` -> WSL `systemd --user` -> `scripts/core/auto-loop.sh`。
-- 核心运行机制与手动执行一致，差异只在“操作入口”从手工命令变为对话驱动。
+Feasibility:
+- Yes, this works.
+- Core chain remains the same: `scripts/windows/start-win.ps1` -> WSL `systemd --user` -> `scripts/core/auto-loop.sh`.
+- Windows entry also starts `wsl-anchor-win.ps1` to reduce idle WSL session teardown.
+- Core behavior is identical to manual operation; only the control interface changes.
 
-## 常用命令
+## Command Quick Reference (By Platform)
+
+| Task | macOS / WSL (Terminal) | Windows (PowerShell) |
+|---|---|---|
+| Start | `make start` | `.\scripts\windows\start-win.ps1` |
+| Status | `make status` | `.\scripts\windows\status-win.ps1` |
+| Live logs | `make monitor` | `.\scripts\windows\monitor-win.ps1` |
+| Last cycle output | `make last` | `.\scripts\windows\last-win.ps1` |
+| Cycle summary | `make cycles` | `.\scripts\windows\cycles-win.ps1` |
+| Stop | `make stop` | `.\scripts\windows\stop-win.ps1` |
+| Web dashboard | N/A | `.\scripts\windows\dashboard-win.ps1` |
+| Install daemon | `make install` | Auto-installed/started by `start-win.ps1` |
+| Uninstall daemon | `make uninstall` | `wsl -d Ubuntu --cd <repo_wsl_path> bash -lc 'make uninstall'` |
+| Pause daemon | `make pause` | `wsl -d Ubuntu --cd <repo_wsl_path> bash -lc 'make pause'` |
+| Resume daemon | `make resume` | `wsl -d Ubuntu --cd <repo_wsl_path> bash -lc 'make resume'` |
+
+### macOS Sleep Prevention (macOS Only)
+
+macOS screen lock usually does not kill processes, but system sleep can pause work. For long runs:
 
 ```bash
-make help       # 查看所有命令
-make start      # 前台启动循环
-make start-awake# 前台启动 + 防止 macOS 睡眠（仅 macOS）
-make stop       # 停止循环
-make status     # 查看状态 + 最新共识
-make monitor    # 实时日志
-make last       # 上一轮完整输出
-make cycles     # 历史周期摘要
-make awake      # 已在跑时，为当前 PID 挂防睡眠（仅 macOS）
-make install    # 安装守护进程（macOS: launchd, Linux/WSL: systemd --user）
-make uninstall  # 卸载守护进程
-make pause      # 暂停守护（macOS/WSL）
-make resume     # 恢复守护（macOS/WSL）
+make start-awake   # Start loop and keep system awake until loop exits
+
+# If loop is already running (after make start):
+make awake         # Attach caffeinate to PID in .auto-loop.pid
 ```
 
-## 防止 Mac 睡眠（推荐）
+Notes:
+- Both commands depend on built-in `caffeinate`
+- `make awake` exits automatically when target PID exits
 
-macOS 的屏保/锁屏通常不会杀进程，但系统睡眠会让任务暂停。长时间运行建议开启防睡眠：
+## Operating Model
 
-```bash
-make start-awake   # 启动循环并保持系统唤醒（直到循环退出）
+### Automatic Convergence (No Endless Discussion)
 
-# 如果循环已经在跑（比如你已执行 make start）：
-make awake         # 读取 .auto-loop.pid 并对该 PID 挂 caffeinate
-```
-
-说明：
-- 这两个命令依赖 macOS 自带 `caffeinate`
-- `make awake` 会在 PID 结束后自动退出
-
-## 运作机制
-
-### 自动收敛（防止无限讨论）
-
-| 周期 | 动作 |
+| Cycle | Action |
 |------|------|
-| Cycle 1 | 头脑风暴——每个 Agent 提一个想法，排出 top 3 |
-| Cycle 2 | 验证 #1——Munger 做 Pre-Mortem，Thompson 验证市场，Campbell 算账 → **GO / NO-GO** |
-| Cycle 3+ | GO → 建 repo 写代码部署。NO-GO → 试下一个。**纯讨论禁止** |
+| Cycle 1 | Brainstorm: each agent proposes ideas, rank top 3 |
+| Cycle 2 | Validate #1: Munger pre-mortem + Thompson market check + Campbell economics -> **GO / NO-GO** |
+| Cycle 3+ | GO -> create repo, build, deploy. NO-GO -> move to next idea. Discussion-only loops are forbidden |
 
-### 六大标准流程
+### Six Standard Workflows
 
-| # | 流程 | 协作链 |
+| # | Workflow | Collaboration Chain |
 |---|------|--------|
-| 1 | **新产品评估** | 调研 → CEO → Munger → 产品 → CTO → CFO |
-| 2 | **功能开发** | 交互 → UI → 全栈 → QA → DevOps |
-| 3 | **产品发布** | QA → DevOps → 营销 → 销售 → 运营 → CEO |
-| 4 | **定价变现** | 调研 → CFO → 销售 → Munger → CEO |
-| 5 | **每周复盘** | 运营 → 销售 → CFO → QA → CEO |
-| 6 | **机会发现** | 调研 → CEO → Munger → CFO |
+| 1 | **New Product Evaluation** | Research -> CEO -> Munger -> Product -> CTO -> CFO |
+| 2 | **Feature Development** | Interaction -> UI -> Full-stack -> QA -> DevOps |
+| 3 | **Product Launch** | QA -> DevOps -> Marketing -> Sales -> Ops -> CEO |
+| 4 | **Pricing and Monetization** | Research -> CFO -> Sales -> Munger -> CEO |
+| 5 | **Weekly Review** | Ops -> Sales -> CFO -> QA -> CEO |
+| 6 | **Opportunity Discovery** | Research -> CEO -> Munger -> CFO |
 
-## 引导方向
+## Steering
 
-AI 团队全自主运行，但你可以随时介入：
+The team runs autonomously, but you can intervene at any time:
 
-| 方式 | 操作 |
+| Method | Action |
 |------|------|
-| **改方向** | 修改 `memories/consensus.md` 的 "Next Action" |
-| **暂停** | `make pause`（macOS/WSL 守护模式）或 `.\scripts\windows\stop-win.ps1`（Windows 入口） |
-| **恢复** | `make resume`，回到自主模式 |
-| **审查产出** | 查看 `docs/*/`——每个 Agent 的工作成果 |
+| **Change direction** | Edit "Next Action" in `memories/consensus.md` |
+| **Pause** | `make pause` (macOS/WSL daemon mode) or `.\scripts\windows\stop-win.ps1` (Windows entry) |
+| **Resume** | `make resume` |
+| **Review outputs** | Check `docs/*/` for artifacts generated by agents |
 
-## 安全红线
+## Safety Guardrails
 
-写死在 `CLAUDE.md`，对所有 Agent 强制生效：
+Hard constraints in `CLAUDE.md`, enforced for all agents:
 
-- 不得删除 GitHub 仓库（`gh repo delete`）
-- 不得删除 Cloudflare 项目（`wrangler delete`）
-- 不得删除系统文件（`~/.ssh/`、`~/.config/` 等）
-- 不得进行非法活动
-- 不得泄露凭证到公开仓库
-- 不得 force push 到 main/master
-- 所有新项目必须在 `projects/` 目录下创建
+- Do not delete GitHub repos (`gh repo delete`)
+- Do not delete Cloudflare projects (`wrangler delete`)
+- Do not delete system directories (`~/.ssh/`, `~/.config/`, etc.)
+- Do not perform illegal activity
+- Do not leak credentials into public repositories
+- Do not force push to main/master
+- Create all new projects under `projects/`
 
-## 配置
+## Configuration
 
-环境变量覆盖：
+Environment variable overrides:
 
 ```bash
-MODEL=gpt-5.3-codex make start             # 可选：临时覆盖模型
-LOOP_INTERVAL=60 make start                # 60 秒间隔（默认 30）
-CYCLE_TIMEOUT_SECONDS=3600 make start      # 单轮超时 1 小时（默认 1800）
-MAX_CONSECUTIVE_ERRORS=3 make start        # 熔断阈值（默认 5）
-CODEX_SANDBOX_MODE=workspace-write make start  # 可选：覆盖 codex 沙箱模式
+MODEL=gpt-5.3-codex make start             # Optional model override
+LOOP_INTERVAL=60 make start                # 60s interval (default 30)
+CYCLE_TIMEOUT_SECONDS=3600 make start      # 1h cycle timeout (default 1800)
+MAX_CONSECUTIVE_ERRORS=3 make start        # Circuit-breaker threshold (default 5)
+CODEX_SANDBOX_MODE=workspace-write make start  # Optional sandbox override
 ```
 
-## 项目结构
+## Project Structure
 
 ```
 auto-company/
-├── CLAUDE.md              # 公司章程（使命 + 安全红线 + 团队 + 流程）
-├── PROMPT.md              # 每轮工作指令（收敛规则）
-├── Makefile               # 常用命令
-├── INDEX.md               # clone_win 索引与脚本职责表
+├── CLAUDE.md              # Company charter (mission + guardrails + team + workflows)
+├── PROMPT.md              # Per-cycle execution prompt (convergence rules)
+├── Makefile               # Common command entry
+├── INDEX.md               # clone_win index + script responsibility table
+├── dashboard/             # Local web status dashboard (started via dashboard-win.ps1)
 ├── scripts/
-│   ├── core/              # 主循环与核心控制实现（auto-loop/monitor/stop）
-│   ├── windows/           # Windows 入口/守护/自启实现
-│   ├── wsl/               # WSL systemd --user 守护实现
-│   └── macos/             # macOS launchd 守护实现
+│   ├── core/              # Core loop and control scripts (auto-loop/monitor/stop)
+│   ├── windows/           # Windows entry/guardian/autostart scripts
+│   ├── wsl/               # WSL systemd --user daemon scripts
+│   └── macos/             # macOS launchd daemon scripts
 ├── memories/
-│   └── consensus.md       # 共识记忆（跨周期接力棒）
-├── docs/                  # Agent 产出（14 个目录 + Windows 指南）
-├── projects/              # 所有新建项目的工作空间
-├── logs/                  # 循环日志
+│   └── consensus.md       # Shared handoff memory across cycles
+├── docs/                  # Agent outputs (14 folders + Windows guide)
+├── projects/              # Workspace for generated projects
+├── logs/                  # Loop logs
 └── .claude/
-    ├── agents/            # 14 个 Agent 定义（专家人格）
-    ├── skills/            # 30+ 技能（调研、财务、营销……）
-    └── settings.json      # 权限 + Agent Teams 开关
+    ├── agents/            # 14 agent definitions (expert personas)
+    ├── skills/            # 30+ reusable skills
+    └── settings.json      # Permissions + Agent Teams switch
 ```
 
-## 依赖
+## Dependencies
 
-| 依赖 | 说明 |
+| Dependency | Notes |
 |------|------|
-| **[Codex CLI](https://www.npmjs.com/package/@openai/codex)** | 必须安装并登录 |
-| **macOS 或 Windows + WSL2 (Ubuntu)** | macOS 支持 launchd；Windows 走 WSL 执行内核 |
-| `node` | Codex 运行时 |
-| `make` | 启停与监控命令入口（WSL/macOS） |
-| `jq` | 推荐，辅助处理日志 |
-| `gh` | 可选，GitHub CLI |
-| `wrangler` | 可选，Cloudflare CLI |
+| **[Codex CLI](https://www.npmjs.com/package/@openai/codex)** | Required, must be installed and logged in |
+| **macOS or Windows + WSL2 (Ubuntu)** | macOS uses launchd; Windows uses WSL execution core |
+| `node` | Codex runtime |
+| `make` | Start/stop/monitor command entry (WSL/macOS) |
+| `jq` | Recommended for log processing |
+| `gh` | Optional, GitHub CLI |
+| `wrangler` | Optional, Cloudflare CLI |
 
-## 常见问题
+## FAQ
 
-### 1) WSL 跑 `.sh` 报 `^M` / `bad interpreter`
+### 1) WSL `.sh` fails with `^M` / `bad interpreter`
 
-- 原因：Windows CRLF 换行导致 Bash 识别失败
-- 处理：
-  - 保持仓库 `.gitattributes` 为 LF 规则
-  - 在仓库执行 `git config core.autocrlf false && git config core.eol lf`
+- Cause: CRLF line endings in shell scripts
+- Fix:
+  - Keep LF rules in `.gitattributes`
+  - Run `git config core.autocrlf false && git config core.eol lf`
 
-### 2) WSL 报 `codex: node not found`
+### 2) WSL says `codex: node not found`
 
-- 原因：只在 Windows 安装了 Codex/Node，WSL 环境缺失
-- 处理：在 WSL 内安装 `node` 与 `@openai/codex`
+- Cause: Codex/Node installed on Windows only, missing in WSL
+- Fix: install `node` and `@openai/codex` inside WSL
 
-### 3) 在 WSL 执行 `make install` 失败
+### 3) `make install` fails inside WSL
 
-- 原因：WSL 当前会话没有可用的 `systemctl --user`
-- 处理：
-  - 确认 WSL 已启用 systemd
-  - 执行 `systemctl --user --version`
-  - 若仍失败，重新登录 WSL 会话后重试
+- Cause: no available `systemctl --user` in current session
+- Fix:
+  - Verify WSL systemd is enabled
+  - Run `systemctl --user --version`
+  - Re-open WSL session and retry if needed
 
-### 4) `clone/` 在 WSL 下显示大量 Git 改动
+### 4) `clone/` shows many Git changes under WSL
 
-- 原因：`clone/` 是留档目录，可能受 Windows CRLF 策略影响，WSL Git 会显示为改动。
-- 可否忽略：可以。前提是你不在 `clone/` 提交。
-- 要求：
-  - 开发与提交只在 `clone_win/`。
-  - `clone/` 仅用于留档对照。
+- Cause: archive directory with potential CRLF/LF noise
+- Can it be ignored: yes, if you do not commit there
+- Requirement:
+  - Develop and commit only in `clone_win/`
+  - Keep `clone/` for archival comparison only
 
-## ⚠️ 免责声明
+## Disclaimer
 
-这是一个**实验项目**：
+This is an **experimental project**:
 
-- **守护进程在 macOS/WSL 均可用** — macOS 依赖 launchd，WSL 依赖 systemd --user
-- **Windows 入口需要 WSL** — PowerShell 只做控制层
-- **还在测试中** — 能跑，但不保证稳定
-- **会花钱** — 每个周期消耗模型额度
-- **完全自主** — AI 团队自己做决策，不会问你。请认真设置 `CLAUDE.md` 中的安全红线
-- **无担保** — AI 可能会构建你意想不到的东西，定期检查 `docs/` 和 `projects/`
+- **Daemon mode works on both macOS and WSL**: launchd on macOS, systemd --user on WSL
+- **Windows entry requires WSL**: PowerShell is only the control layer
+- **Still under test**: runs, but stability is not guaranteed
+- **Costs money**: each cycle consumes model quota
+- **Fully autonomous**: agents act without approval prompts; configure guardrails carefully in `CLAUDE.md`
+- **No warranty**: review `docs/` and `projects/` regularly
 
-建议先用 `make start`（前台）观察行为，再启用守护模式（macOS/WSL：`make install`，Windows：`.\scripts\windows\start-win.ps1`）。
+Suggested rollout: start with `make start` (foreground), then move to daemon mode (`make install` on macOS/WSL, `.\scripts\windows\start-win.ps1` on Windows).
 
-## 致谢
+## Acknowledgments
 
-- [continuous-claude](https://github.com/AnandChowdhary/continuous-claude) — 跨会话共享笔记
-- [ralph-claude-code](https://github.com/frankbria/ralph-claude-code) — 退出信号拦截
-- [claude-auto-resume](https://github.com/terryso/claude-auto-resume) — 用量限制恢复
+- [continuous-claude](https://github.com/AnandChowdhary/continuous-claude) - cross-session shared notes
+- [ralph-claude-code](https://github.com/frankbria/ralph-claude-code) - exit signal interception
+- [claude-auto-resume](https://github.com/terryso/claude-auto-resume) - usage-limit resume pattern
 
 ## License
 

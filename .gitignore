@@ -138,6 +138,8 @@ logs/
 .auto-loop.env
 .auto-loop-awake.pid
 .auto-loop-awake.stop
+.auto-loop-wsl-anchor.pid
+.auto-loop-wsl-anchor.stop
 memories/consensus.md.bak
 
 # Projects directory (show folder on GitHub, hide contents)

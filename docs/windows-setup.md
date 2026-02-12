@@ -6,6 +6,7 @@
 - WSL2 (Ubuntu + systemd) 作为执行内核
 - WSL `systemd --user` 提供守护与崩溃自拉起
 - Windows `scripts/windows/awake-guardian-win.ps1` 提供运行时防睡眠
+- Windows `scripts/windows/wsl-anchor-win.ps1` 提供 WSL 会话保活（防止空闲退出）
 
 ## 1. 一次性安装（WSL 内）
 
@@ -46,6 +47,12 @@ bash -ic 'command -v codex; codex --version'
 
 应优先命中 WSL 本地路径（`/home/<user>/...`），避免 `/mnt/c/...`。
 
+建议一次性启用 linger（提高 user service 持续性）：
+
+```powershell
+wsl -d Ubuntu -u root loginctl enable-linger max
+```
+
 ## 3. 前置事项（每次开始前）
 
 1. 只在 `clone_win/` 运行与提交，`clone/` 仅留档。
@@ -71,11 +78,13 @@ wsl -d Ubuntu bash -lc 'command -v codex'
 .\scripts\windows\last-win.ps1
 .\scripts\windows\cycles-win.ps1
 .\scripts\windows\stop-win.ps1
+.\scripts\windows\dashboard-win.ps1
 ```
 
 说明：
-- `.\scripts\windows\start-win.ps1` 会写入 `.auto-loop.env`，并启动 `auto-company.service` + `awake guardian`
-- `.\scripts\windows\stop-win.ps1` 会停止 `auto-company.service` 并关闭 `awake guardian`
+- `.\scripts\windows\start-win.ps1` 会写入 `.auto-loop.env`，并启动 `auto-company.service` + `awake guardian` + `wsl anchor`
+- `.\scripts\windows\stop-win.ps1` 会停止 `auto-company.service` 并关闭 `awake guardian` + `wsl anchor`
+- `.\scripts\windows\dashboard-win.ps1` 会启动本地 Web 看板（默认 `http://127.0.0.1:8787`）
 
 推荐参数：
 - `CycleTimeoutSeconds`：`900-1800`
@@ -157,6 +166,14 @@ git config core.eol lf
 
 - 现象：`scripts/windows/start-win.ps1` 提示 daemon 已启动，但 guardian 启动失败并返回非零
 - 处理：先执行 `.\scripts\windows\status-win.ps1` 确认服务状态，再手动执行 `.\scripts\windows\awake-guardian-win.ps1 -Action start`
+
+### 频繁出现 `Cycle #1 START` 且伴随 `Auto Loop Shutting Down`
+
+- 原因：WSL 会话被回收（常见于 linger 未开启或缺少 keepalive）
+- 处理：
+  - 确认 `wsl-anchor` 为 RUNNING：`.\scripts\windows\status-win.ps1`
+  - 一次性启用 linger：`wsl -d Ubuntu -u root loginctl enable-linger max`
+  - 重启服务：`.\scripts\windows\stop-win.ps1` 然后 `.\scripts\windows\start-win.ps1`
 
 ### 自启脚本提示 `Access is denied`
 

@@ -1,34 +1,41 @@
 param(
     [ValidateSet("start", "stop", "status", "run")]
     [string]$Action = "status",
-    [int]$HeartbeatSeconds = 20
+    [string]$Distro = "Ubuntu",
+    [string]$RepoWsl = ""
 )
 
 $ErrorActionPreference = "Stop"
 
+if (-not (Get-Command wsl.exe -ErrorAction SilentlyContinue)) {
+    throw "wsl.exe not found. Enable WSL first."
+}
+
 $repoWin = (Resolve-Path (Join-Path $PSScriptRoot "..\\..")).Path
-$pidFile = Join-Path $repoWin ".auto-loop-awake.pid"
-$stopFile = Join-Path $repoWin ".auto-loop-awake.stop"
+$pidFile = Join-Path $repoWin ".auto-loop-wsl-anchor.pid"
+$stopFile = Join-Path $repoWin ".auto-loop-wsl-anchor.stop"
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)
 
-if (-not ("AutoCompanySleepGuard.NativeMethods" -as [type])) {
-    Add-Type -TypeDefinition @"
-using System.Runtime.InteropServices;
-namespace AutoCompanySleepGuard {
-    public static class NativeMethods {
-        [DllImport("kernel32.dll", SetLastError = true)]
-        public static extern uint SetThreadExecutionState(uint esFlags);
+function Resolve-RepoWslPath {
+    param([string]$RawRepoWsl)
+
+    if ($RawRepoWsl) {
+        return $RawRepoWsl
     }
-}
-"@
+
+    $repoWinForWsl = $repoWin -replace "\\", "/"
+    $repoWslRaw = & wsl.exe wslpath -a "$repoWinForWsl"
+    if (-not $repoWslRaw) {
+        throw "Failed to convert repository path to WSL path."
+    }
+    $repoWsl = $repoWslRaw.Trim()
+    if (-not $repoWsl) {
+        throw "Failed to convert repository path to WSL path."
+    }
+    return $repoWsl
 }
 
-$ES_SYSTEM_REQUIRED = [uint32]0x00000001
-$ES_AWAYMODE_REQUIRED = [uint32]0x00000040
-$ES_CONTINUOUS = [uint32]2147483648
-$RUN_FLAGS = $ES_CONTINUOUS -bor $ES_SYSTEM_REQUIRED -bor $ES_AWAYMODE_REQUIRED
-
-function Get-RunningGuardianProcess {
+function Get-RunningAnchorProcess {
     if (-not (Test-Path $pidFile)) {
         return $null
     }
@@ -49,7 +56,7 @@ function Get-RunningGuardianProcess {
     }
 
     $cmd = (Get-CimInstance Win32_Process -Filter "ProcessId = $pidValue" -ErrorAction SilentlyContinue).CommandLine
-    if ($cmd -and $cmd -match "awake-guardian-win\.ps1" -and $cmd -match "-Action\s+run") {
+    if ($cmd -and $cmd -match "wsl-anchor-win\.ps1" -and $cmd -match "-Action\s+run") {
         return $proc
     }
     return $null
@@ -62,27 +69,30 @@ function Clear-StateFiles {
 
 switch ($Action) {
     "start" {
-        $existing = Get-RunningGuardianProcess
+        $existing = Get-RunningAnchorProcess
         if ($existing) {
-            Write-Output "Awake guardian already running (PID $($existing.Id))."
+            Write-Output "WSL anchor: RUNNING (PID $($existing.Id))"
             exit 0
         }
 
+        $resolvedRepoWsl = Resolve-RepoWslPath -RawRepoWsl $RepoWsl
         Remove-Item $stopFile -ErrorAction SilentlyContinue
         $selfPath = $PSCommandPath
+
         $proc = Start-Process -FilePath "powershell.exe" -WindowStyle Hidden -PassThru -ArgumentList @(
             "-NoProfile",
             "-ExecutionPolicy", "Bypass",
             "-File", $selfPath,
             "-Action", "run",
-            "-HeartbeatSeconds", "$HeartbeatSeconds"
+            "-Distro", $Distro,
+            "-RepoWsl", $resolvedRepoWsl
         )
 
-        for ($i = 0; $i -lt 20; $i++) {
+        for ($i = 0; $i -lt 25; $i++) {
             Start-Sleep -Milliseconds 200
-            $running = Get-RunningGuardianProcess
+            $running = Get-RunningAnchorProcess
             if ($running) {
-                Write-Output "Awake guardian started (PID $($running.Id))."
+                Write-Output "WSL anchor started (PID $($running.Id))."
                 exit 0
             }
         }
@@ -90,37 +100,35 @@ switch ($Action) {
         if ($proc -and -not $proc.HasExited) {
             Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
         }
-        Write-Error "Failed to start awake guardian."
+        Write-Error "Failed to start WSL anchor."
         exit 1
     }
 
     "run" {
+        $resolvedRepoWsl = Resolve-RepoWslPath -RawRepoWsl $RepoWsl
         [System.IO.File]::WriteAllText($pidFile, "$PID`n", $utf8NoBom)
         Remove-Item $stopFile -ErrorAction SilentlyContinue
 
         try {
-            $state = [AutoCompanySleepGuard.NativeMethods]::SetThreadExecutionState($RUN_FLAGS)
-            if ($state -eq 0) {
-                throw "SetThreadExecutionState failed at startup."
-            }
-
             while (-not (Test-Path $stopFile)) {
-                Start-Sleep -Seconds $HeartbeatSeconds
-                [void][AutoCompanySleepGuard.NativeMethods]::SetThreadExecutionState($RUN_FLAGS)
+                & wsl.exe -d $Distro --cd $resolvedRepoWsl bash -lc "while true; do sleep 3600; done" | Out-Null
+                if (Test-Path $stopFile) {
+                    break
+                }
+                Start-Sleep -Seconds 2
             }
         }
         finally {
-            [void][AutoCompanySleepGuard.NativeMethods]::SetThreadExecutionState($ES_CONTINUOUS)
             Clear-StateFiles
         }
         exit 0
     }
 
     "stop" {
-        $existing = Get-RunningGuardianProcess
+        $existing = Get-RunningAnchorProcess
         if (-not $existing) {
             Clear-StateFiles
-            Write-Output "Awake guardian is not running."
+            Write-Output "WSL anchor is not running."
             exit 0
         }
 
@@ -130,16 +138,16 @@ switch ($Action) {
             Stop-Process -Id $existing.Id -Force -ErrorAction SilentlyContinue
         }
         Clear-StateFiles
-        Write-Output "Awake guardian stopped."
+        Write-Output "WSL anchor stopped."
         exit 0
     }
 
     "status" {
-        $existing = Get-RunningGuardianProcess
+        $existing = Get-RunningAnchorProcess
         if ($existing) {
-            Write-Output "Awake guardian: RUNNING (PID $($existing.Id))"
+            Write-Output "WSL anchor: RUNNING (PID $($existing.Id))"
         } else {
-            Write-Output "Awake guardian: STOPPED"
+            Write-Output "WSL anchor: STOPPED"
         }
         exit 0
     }

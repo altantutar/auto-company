@@ -61,3 +61,20 @@
 - 修复后建议复验:
   - 重新执行 `scripts/pilot-smoke.sh`。
   - 增补一条负向用例：pending draft 直接 mark-sent 应失败。
+
+## 修复后复验（2026-02-12）
+- 修复项已落地：
+  - `POST /queue/:id/mark-sent` 仅允许 `approved` 状态。
+  - `POST /queue/:id/send` 仅允许 `approved` 状态。
+  - Queue UI 仅在 `approved` 状态展示 `mark sent` / `send (resend)`。
+  - `scripts/pilot-smoke.sh` 新增负向用例：`pending -> mark-sent` 必须被阻断。
+- 复验结果：
+  - `npm run typecheck` 通过。
+  - `bash ./scripts/pilot-smoke.sh` 通过（含负向用例）。
+  - 关键断言通过：预审批 `mark-sent` 后 draft 仍为 `pending`。
+
+### 复验结论
+- 结论更新为：**GO with conditions**。
+- 条件：
+  - 远程 staging 部署仍需先完成 Cloudflare 登录与 staging D1 `database_id` 回填。
+  - 首场外部 pilot 继续执行人工审批路径（`approve -> mark-sent`），并记录异常样本。

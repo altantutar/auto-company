@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Auto Company Control Deck</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Crimson+Pro:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="mesh"></div>
+  <div class="grain"></div>
+  <main class="deck">
+    <header class="hero panel reveal-1">
+      <div>
+        <p class="eyebrow">AUTO COMPANY</p>
+        <h1>Control Deck</h1>
+        <p class="subtitle">Windows + WSL runtime telemetry with action controls.</p>
+      </div>
+      <div class="hero-meta">
+        <div class="pulse-wrap">
+          <span id="pulseDot" class="pulse-dot"></span>
+          <span id="pulseText">Live Link: UNKNOWN</span>
+        </div>
+        <p id="lastUpdate">Last update: --</p>
+        <p id="latency">Roundtrip: --</p>
+      </div>
+    </header>
+
+    <section class="controls panel reveal-2">
+      <div class="control-group">
+        <button id="btnRefresh" class="btn btn-ghost">Refresh</button>
+        <button id="btnStart" class="btn btn-start">Start</button>
+        <button id="btnStop" class="btn btn-stop">Stop</button>
+      </div>
+      <div class="control-group compact">
+        <label class="toggle">
+          <input id="autoToggle" type="checkbox" checked />
+          <span>Auto refresh</span>
+        </label>
+        <label>
+          Interval
+          <select id="refreshInterval">
+            <option value="3000">3s</option>
+            <option value="5000" selected>5s</option>
+            <option value="8000">8s</option>
+            <option value="12000">12s</option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="grid-cards reveal-3">
+      <article class="panel card status-card" id="cardGuardian">
+        <h3>Guardian</h3>
+        <p class="big" id="guardianState">--</p>
+        <p class="muted mono" id="guardianMeta">PID --</p>
+      </article>
+      <article class="panel card status-card" id="cardDaemon">
+        <h3>WSL Daemon</h3>
+        <p class="big" id="daemonState">--</p>
+        <p class="muted mono" id="daemonMeta">MainPID --</p>
+      </article>
+      <article class="panel card status-card" id="cardLoop">
+        <h3>Loop</h3>
+        <p class="big" id="loopState">--</p>
+        <p class="muted mono" id="loopMeta">Cycle --</p>
+      </article>
+      <article class="panel card status-card" id="cardAutostart">
+        <h3>Autostart</h3>
+        <p class="big" id="autostartState">--</p>
+        <p class="muted mono" id="autostartMeta">Task Scheduler</p>
+      </article>
+    </section>
+
+    <section class="grid-details reveal-4">
+      <article class="panel detail">
+        <h3>Runtime State</h3>
+        <dl id="stateList" class="state-list"></dl>
+      </article>
+      <article class="panel detail">
+        <h3>Consensus Head</h3>
+        <div id="consensusText" class="markdown-view">(loading...)</div>
+      </article>
+    </section>
+
+    <section class="panel reveal-5">
+      <div class="panel-head">
+        <h3>Recent Log</h3>
+        <button id="btnTail" class="btn btn-ghost small">Reload Log Tail</button>
+      </div>
+      <pre id="logText" class="terminal tall">(loading...)</pre>
+    </section>
+
+    <section class="panel reveal-6">
+      <div class="panel-head">
+        <h3>Raw Status Output</h3>
+        <button id="btnRaw" class="btn btn-ghost small">Toggle</button>
+      </div>
+      <pre id="rawText" class="terminal hidden"></pre>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>

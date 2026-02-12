@@ -149,6 +149,18 @@ rm -f "$queue_pending"
 
 echo "[pilot-smoke] selected draft_id=$DRAFT_ID"
 
+echo "[pilot-smoke] step=mark-sent-blocked-before-approve"
+post_expect_status "/queue/${DRAFT_ID}/mark-sent" "303"
+
+DRAFT_STATUS_SQL="SELECT status FROM drafts WHERE id='${DRAFT_ID}' LIMIT 1;"
+draft_status_json="$(npx wrangler d1 execute "$DB_NAME" --local --persist-to "$PERSIST_DIR" --command "$DRAFT_STATUS_SQL" --json)"
+draft_status="$(node -e 'const data=JSON.parse(process.argv[1]); console.log((data[0].results[0]||{}).status || "");' "$draft_status_json")"
+if [[ "$draft_status" != "pending" ]]; then
+  echo "[pilot-smoke] expected pending draft to stay pending before approval, got=$draft_status" >&2
+  exit 1
+fi
+echo "[pilot-smoke] pre-approval guard ok (status stays pending)"
+
 echo "[pilot-smoke] step=approve"
 post_expect_status "/queue/${DRAFT_ID}/approve" "303"
 

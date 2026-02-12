@@ -30,19 +30,21 @@
 
 停止链路：
 
-`scripts/windows/stop-win.ps1` -> 停止 `auto-company.service` + 停止 `awake guardian`
+`scripts/windows/stop-win.ps1` -> 停止 `auto-company.service` + 停止 `awake guardian` + 停止 `wsl anchor`
 
 ## 脚本职责表（入口 / 守护 / 自启 / 诊断）
 
 | 类别 | 脚本路径 | 主要职责 |
 |---|---|---|
-| 入口 | `scripts/windows/start-win.ps1` | 启动 WSL daemon，写 `.auto-loop.env`，启动防睡眠 |
-| 入口 | `scripts/windows/stop-win.ps1` | 停止 daemon 并回收防睡眠 |
-| 入口 | `scripts/windows/status-win.ps1` | 汇总 guardian/autostart/daemon/loop 四层状态 |
+| 入口 | `scripts/windows/start-win.ps1` | 启动 WSL daemon，写 `.auto-loop.env`，启动防睡眠与 WSL keepalive |
+| 入口 | `scripts/windows/stop-win.ps1` | 停止 daemon 并回收防睡眠与 WSL keepalive |
+| 入口 | `scripts/windows/status-win.ps1` | 汇总 guardian/keepalive/autostart/daemon/loop 五层状态 |
 | 诊断 | `scripts/windows/monitor-win.ps1` | 实时日志 |
 | 诊断 | `scripts/windows/last-win.ps1` | 最近一轮完整输出 |
 | 诊断 | `scripts/windows/cycles-win.ps1` | 周期摘要 |
+| 诊断 | `scripts/windows/dashboard-win.ps1` | 启动本地 Web 可视化看板 |
 | 保活 | `scripts/windows/awake-guardian-win.ps1` | 运行期防睡眠（`start/stop/status/run`） |
+| 保活 | `scripts/windows/wsl-anchor-win.ps1` | 维持 WSL 会话常驻（`start/stop/status/run`） |
 | 自启 | `scripts/windows/enable-autostart-win.ps1` | 创建登录自启任务 |
 | 自启 | `scripts/windows/disable-autostart-win.ps1` | 删除登录自启任务 |
 | 自启 | `scripts/windows/autostart-status-win.ps1` | 查询自启任务状态 |
@@ -57,7 +59,7 @@
 ## 快速排障路径
 
 1. 先看 `scripts/windows/status-win.ps1`
-2. 再看 `scripts/windows/monitor-win.ps1`
+2. 再看 `scripts/windows/dashboard-win.ps1` 或 `scripts/windows/monitor-win.ps1`
 3. 守护异常看 `scripts/wsl/wsl-daemon-status.sh`
 4. 自启异常看 `scripts/windows/autostart-status-win.ps1`（权限问题优先检查管理员 PowerShell）
 
