@@ -1,298 +1,207 @@
 <div align="center">
 
-# Auto Company
+# Auto Crypto Company
 
-**A fully autonomous AI company running 24/7**
+**A fully autonomous AI crypto company**
 
-14 AI agents, each modeled after world-class experts in their domain.
-They ideate products, make decisions, write code, deploy, and market - without human intervention.
+12 AI agents, each modeled after crypto-native experts.
+They research markets, design protocols, write Solidity, audit contracts, build frontends, and deploy — without human intervention.
 
-Powered by [Codex CLI](https://www.npmjs.com/package/@openai/codex) and Claude Code on macOS + Windows/WSL.
+Powered by [Claude Code](https://claude.ai/code).
 
-[![macOS](https://img.shields.io/badge/Platform-macOS-blue)](#dependencies)
-[![Windows WSL](https://img.shields.io/badge/Platform-Windows%20WSL-blue)](#windows-wsl-quick-start)
-[![Codex CLI](https://img.shields.io/badge/Engine-Codex%20CLI-orange)](https://www.npmjs.com/package/@openai/codex)
+[![Base](https://img.shields.io/badge/Chain-Base-blue)](https://base.org)
+[![Foundry](https://img.shields.io/badge/Toolchain-Foundry-orange)](https://book.getfoundry.sh/)
 [![Claude Code](https://img.shields.io/badge/Engine-Claude%20Code-purple)](#dependencies)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](https://opensource.org/licenses/MIT)
 [![Status](https://img.shields.io/badge/Status-Experimental-red)](#disclaimer)
-
-> **Experimental project** - still under active testing. It runs, but stability is not guaranteed.  
-> macOS uses launchd; Windows uses WSL systemd --user + PowerShell entry scripts.
 
 </div>
 
 ---
 
-[中文版本](README-ZH.md)
+## First Product: Yield Router
 
-## Dashboard Preview
+**14 agents. Zero human code. One shipped DeFi product.**
 
-![Auto Company Dashboard](presentation/dashboard-showcase.png)
+Yield Router is a Base-native ERC-4626 yield vault that auto-allocates USDC across Aave, Morpho, and Aerodrome for optimized yield.
 
-## What Is This?
+**[Live Frontend →](https://altantutar.github.io/yield-router/)**
 
-You start a loop. The AI team wakes up, reads shared consensus memory, decides what to do, forms a 3-5 person squad, executes, updates consensus memory, then sleeps briefly. Then it repeats.
+Built in two pipeline runs:
 
 ```
-daemon (launchd / systemd --user, auto-restart on crash)
-  └── scripts/core/auto-loop.sh (continuous loop)
-        ├── reads PROMPT.md + consensus.md
-        ├── LLM CLI call (Codex CLI / Claude Code)
-        │   ├── reads CLAUDE.md (charter + guardrails)
-        │   ├── reads .claude/skills/team/SKILL.md (teaming method)
-        │   ├── forms an Agent Team (3-5 agents)
-        │   ├── executes: research, coding, deploy, marketing
-        │   └── updates memories/consensus.md (handoff baton)
-        ├── failure handling: rate-limit wait / circuit breaker / consensus rollback
-        └── sleep -> next cycle
+Run 1 — Research to Audit (9 agents)
+──────────────────────────────────────
+research-hasu        → Market opportunity identified
+ceo-armstrong        → GO decision (14-week timeline)
+protocol-buterin     → Mechanism design (5 attack vectors)
+tokenomics-cobie     → NO TOKEN — fee model, no inflation
+defi-kulechov        → 1,163-line product spec
+solidity-gakonst     → 2,500 lines Solidity, 47 tests
+contracts-samczsun   → Security audit: 2 critical, 4 high (all fixed)
+investor-haseeb      → CONDITIONAL INVEST, P($10M TVL) = 35%
+infra-karalabe       → Deployment plan + keeper architecture
+
+Run 2 — Design to Ship (5 agents)
+──────────────────────────────────────
+infra-karalabe       → Deploy scripts, Makefile, mock adapters
+interaction-cooper   → UX design: 38 screen states, 3 personas
+ui-duarte            → Visual design: 750-line Synapse system
+fullstack-dhh        → 3,400-line frontend (vanilla HTML/CSS/JS)
+qa-tincho            → QA: 4 bugs found and fixed, PASS
 ```
 
-Each cycle is an independent CLI call. `memories/consensus.md` is the only cross-cycle state.
+## How It Works
 
-## Where To Start (By Platform)
+You give the agents a mission. They form squads, execute the pipeline, and update shared memory. Each cycle is an independent CLI call. `memories/consensus.md` is the cross-cycle baton.
 
-- Windows users: start from [Windows (WSL) Quick Start](#windows-wsl-quick-start), then read [`docs/windows-setup.md`](docs/windows-setup.md)
-- macOS users: start from [macOS Quick Start](#macos-quick-start), then see [Command Quick Reference](#command-quick-reference-by-platform)
-
-## Team Lineup (14 Agents)
-
-This is not "you are a generic developer". It is "you are DHH" style role prompting with real expert mental models.
-
-| Layer | Role | Expert Persona | Core Strength |
-|------|------|------|----------|
-| **Strategy** | CEO | Jeff Bezos | PR/FAQ, flywheel thinking, Day 1 mindset |
-| | CTO | Werner Vogels | Design for failure, API-first architecture |
-| | Inversion | Charlie Munger | Inversion, pre-mortems, misjudgment checklist |
-| **Product** | Product Design | Don Norman | Affordance, mental models, human-centered design |
-| | UI Design | Matias Duarte | Material metaphor, typography-first design |
-| | Interaction Design | Alan Cooper | Goal-directed design, persona-driven decisions |
-| **Engineering** | Full-Stack | DHH | Convention over configuration, majestic monolith |
-| | QA | James Bach | Exploratory testing, testing is not checking |
-| | DevOps/SRE | Kelsey Hightower | Automation first, reliability discipline |
-| **Business** | Marketing | Seth Godin | Purple cow, permission marketing, smallest viable audience |
-| | Operations | Paul Graham | Do things that do not scale, ramen profitability |
-| | Sales | Aaron Ross | Predictable revenue, funnel systems |
-| | CFO | Patrick Campbell | Value-based pricing, unit economics |
-| **Intelligence** | Research Analyst | Ben Thompson | Aggregation theory, value chain analysis |
-
-Plus 30+ reusable skills (deep research, scraping, financial modeling, SEO, security audit, UX audit, etc.).
-
-## macOS Quick Start
-
-```bash
-# Prerequisites:
-# - macOS
-# - Codex CLI or Claude Code installed and authenticated
-# - Available model quota
-
-# Clone
-git clone https://github.com/nicepkg/auto-company.git
-cd auto-company
-
-# Foreground run (live output)
-make start
-
-# Or install daemon (auto-start + auto-restart)
-make install
+```
+Claude Code session
+  ├── reads CLAUDE.md (charter + guardrails)
+  ├── reads memories/consensus.md (current state)
+  ├── forms Agent Team (3-12 agents as needed)
+  ├── executes: research → design → code → audit → deploy
+  └── updates memories/consensus.md (handoff)
 ```
 
-## Windows (WSL) Quick Start
+## Team Lineup (12 Crypto-Native Agents)
 
-```powershell
-# Prerequisites:
-# - Windows 10/11 + WSL2 (Ubuntu)
-# - Codex CLI or Claude Code installed and authenticated inside WSL
-# - jq and make available inside WSL
-# - Available model quota
+Each agent is an expert persona with deep domain knowledge, not a generic "you are a developer" prompt.
 
-# Clone
-git clone https://github.com/nicepkg/auto-company.git
-cd auto-company
+| Layer | Agent | Persona | Domain |
+|-------|-------|---------|--------|
+| **Strategy** | `ceo-armstrong` | Brian Armstrong | Protocol direction, compliance, mass-market adoption |
+| | `investor-haseeb` | Haseeb Qureshi | Investment gate, game theory, economic sustainability |
+| **Protocol** | `protocol-buterin` | Vitalik Buterin | Mechanism design, game theory, upgrade paths |
+| | `contracts-samczsun` | samczsun | Security audit, vulnerability analysis. **Mainnet veto power** |
+| | `defi-kulechov` | Stani Kulechov | DeFi product design, lending, liquidity mechanics |
+| | `tokenomics-cobie` | Cobie | Token design, anti-Ponzi detection, fair launch |
+| **Engineering** | `solidity-gakonst` | Georgios Konstantopoulos | Solidity, Foundry, EVM optimization, deployment |
+| | `qa-tincho` | Tincho | Smart contract QA, fuzz testing, invariant testing |
+| | `infra-karalabe` | Péter Szilágyi | Node infra, RPC, chain indexing, frontend deploy |
+| **Business** | `ecosystem-pollak` | Jesse Pollak | Developer ecosystem, L2 strategy, community |
+| | `cfo-hayes` | Arthur Hayes | Macro cycles, treasury management, derivatives |
+| | `research-hasu` | Hasu | Market structure, MEV, protocol economics |
 
-# Start (daemon mode via PowerShell)
-.\scripts\windows\start-win.ps1
+Plus general-purpose agents for UX (Alan Cooper), UI (Matías Duarte), frontend (DHH), and QA (James Bach) when building consumer-facing products.
 
-# Status
-.\scripts\windows\status-win.ps1
+## Collaboration Pipelines
 
-# Stop
-.\scripts\windows\stop-win.ps1
-```
-
-For monitoring, dashboard, and autostart commands, see [`docs/windows-setup.md`](docs/windows-setup.md).
-
-## Command Quick Reference (By Platform)
-
-| Task | macOS / WSL (Terminal) | Windows (PowerShell) |
-|---|---|---|
-| Start | `make start` | `.\scripts\windows\start-win.ps1` |
-| Status | `make status` | `.\scripts\windows\status-win.ps1` |
-| Live logs | `make monitor` | `.\scripts\windows\monitor-win.ps1` |
-| Last cycle output | `make last` | `.\scripts\windows\last-win.ps1` |
-| Cycle summary | `make cycles` | `.\scripts\windows\cycles-win.ps1` |
-| Stop | `make stop` | `.\scripts\windows\stop-win.ps1` |
-| Web dashboard | N/A | `.\scripts\windows\dashboard-win.ps1` |
-| Install daemon | `make install` | Auto-installed/started by `start-win.ps1` |
-| Uninstall daemon | `make uninstall` | `wsl -d Ubuntu --cd <repo_wsl_path> bash -lc 'make uninstall'` |
-| Pause daemon | `make pause` | `wsl -d Ubuntu --cd <repo_wsl_path> bash -lc 'make pause'` |
-| Resume daemon | `make resume` | `wsl -d Ubuntu --cd <repo_wsl_path> bash -lc 'make resume'` |
-
-### macOS Sleep Prevention (macOS Only)
-
-macOS screen lock usually does not kill processes, but system sleep can pause work. For long runs:
-
-```bash
-make start-awake   # Start loop and keep system awake until loop exits
-
-# If loop is already running (after make start):
-make awake         # Attach caffeinate to PID in .auto-loop.pid
-```
-
-Notes:
-- Both commands depend on built-in `caffeinate`
-- `make awake` exits automatically when target PID exits
-
-## Operating Model
-
-### Automatic Convergence (No Endless Discussion)
-
-| Cycle | Action |
-|------|------|
-| Cycle 1 | Brainstorm: each agent proposes ideas, rank top 3 |
-| Cycle 2 | Validate #1: Munger pre-mortem + Thompson market check + Campbell economics -> **GO / NO-GO** |
-| Cycle 3+ | GO -> create repo, build, deploy. NO-GO -> move to next idea. Discussion-only loops are forbidden |
-
-### Six Standard Workflows
-
-| # | Workflow | Collaboration Chain |
-|---|------|--------|
-| 1 | **New Product Evaluation** | Research -> CEO -> Munger -> Product -> CTO -> CFO |
-| 2 | **Feature Development** | Interaction -> UI -> Full-stack -> QA -> DevOps |
-| 3 | **Product Launch** | QA -> DevOps -> Marketing -> Sales -> Ops -> CEO |
-| 4 | **Pricing and Monetization** | Research -> CFO -> Sales -> Munger -> CEO |
-| 5 | **Weekly Review** | Ops -> Sales -> CFO -> QA -> CEO |
-| 6 | **Opportunity Discovery** | Research -> CEO -> Munger -> CFO |
-
-## Steering
-
-The team runs autonomously, but you can intervene at any time:
-
-| Method | Action |
-|------|------|
-| **Change direction** | Edit "Next Action" in `memories/consensus.md` |
-| **Pause** | `make pause` (macOS/WSL daemon mode) or `.\scripts\windows\stop-win.ps1` (Windows entry) |
-| **Resume** | `make resume` |
-| **Review outputs** | Check `docs/*/` for artifacts generated by agents |
-
-## Safety Guardrails
-
-Hard constraints in `CLAUDE.md`, enforced for all agents:
-
-- Do not delete GitHub repos (`gh repo delete`)
-- Do not delete Cloudflare projects (`wrangler delete`)
-- Do not delete system directories (`~/.ssh/`, `~/.config/`, etc.)
-- Do not perform illegal activity
-- Do not leak credentials into public repositories
-- Do not force push to main/master
-- Create all new projects under `projects/`
-
-## Configuration
-
-Environment variable overrides:
-
-```bash
-MODEL=gpt-5.3-codex make start             # Optional model override
-LOOP_INTERVAL=60 make start                # 60s interval (default 30)
-CYCLE_TIMEOUT_SECONDS=3600 make start      # 1h cycle timeout (default 1800)
-MAX_CONSECUTIVE_ERRORS=3 make start        # Circuit-breaker threshold (default 5)
-CODEX_SANDBOX_MODE=workspace-write make start  # Optional sandbox override
-```
+| # | Pipeline | Agent Chain |
+|---|----------|-------------|
+| 1 | **New Protocol** | research-hasu → ceo-armstrong → protocol-buterin → tokenomics-cobie → defi-kulechov → solidity-gakonst → contracts-samczsun → investor-haseeb → infra-karalabe |
+| 2 | **DeFi Product Build** | defi-kulechov → protocol-buterin → solidity-gakonst → qa-tincho → contracts-samczsun → investor-haseeb → infra-karalabe |
+| 3 | **Frontend + Ship** | interaction-cooper → ui-duarte → fullstack-dhh → qa-tincho → infra-karalabe |
+| 4 | **Mainnet Deployment** | solidity-gakonst → qa-tincho → contracts-samczsun → investor-haseeb → infra-karalabe → ecosystem-pollak |
+| 5 | **Security Incident** | contracts-samczsun → infra-karalabe → ceo-armstrong → ecosystem-pollak |
+| 6 | **Market Assessment** | research-hasu → ceo-armstrong → tokenomics-cobie → cfo-hayes |
 
 ## Project Structure
 
 ```
 auto-company/
-├── CLAUDE.md              # Company charter (mission + guardrails + team + workflows)
-├── PROMPT.md              # Per-cycle execution prompt (convergence rules)
-├── Makefile               # Common command entry
-├── INDEX.md               # script index + responsibility table
-├── dashboard/             # Local web status dashboard (started via dashboard-win.ps1)
-├── scripts/
-│   ├── core/              # Core loop and control scripts (auto-loop/monitor/stop)
-│   ├── windows/           # Windows entry/guardian/autostart scripts
-│   ├── wsl/               # WSL systemd --user daemon scripts
-│   └── macos/             # macOS launchd daemon scripts
+├── CLAUDE.md                    # Company charter (mission + guardrails + team)
+├── CRYPTO.md                    # Crypto-specific operating rules
 ├── memories/
-│   └── consensus.md       # Shared handoff memory across cycles
-├── docs/                  # Agent outputs (14 folders + Windows guide)
-├── projects/              # Workspace for generated projects
-├── logs/                  # Loop logs
-└── .claude/
-    ├── agents/            # 14 agent definitions (expert personas)
-    ├── skills/            # 30+ reusable skills
-    └── settings.json      # Permissions + Agent Teams switch
+│   └── consensus.md             # Shared state across cycles
+├── .claude/
+│   ├── agents/                  # 12+ agent definitions (expert personas)
+│   └── skills/                  # 30+ reusable skills
+├── projects/
+│   ├── yield-router/            # First product
+│   │   ├── src/                 # Solidity contracts
+│   │   ├── test/                # Foundry tests (47 passing)
+│   │   ├── script/              # Deployment + keeper scripts
+│   │   ├── frontend/            # Landing page + dApp
+│   │   └── docs/                # UX, UI, QA specs
+│   └── pipeline-replay/         # Pipeline visualization
+└── docs/                        # Agent outputs by role
+    ├── research/                # Market intelligence
+    ├── crypto-ceo/              # Strategic decisions
+    ├── protocol/                # Mechanism designs
+    ├── tokenomics/              # Token assessments
+    ├── defi/                    # Product specs
+    ├── solidity/                # Implementation notes
+    ├── contracts/               # Audit reports
+    ├── investor/                # Investment assessments
+    ├── infra/                   # Deployment runbooks
+    └── marketing/               # Launch strategy
 ```
 
-## Dependencies
+## Safety Guardrails
 
-| Dependency | Notes |
-|------|------|
-| **Codex CLI / Claude Code** | Supported CLI engines |
-| **macOS or Windows + WSL2 (Ubuntu)** | macOS uses launchd; Windows uses WSL execution core |
-| `node` | Codex runtime |
-| `make` | Start/stop/monitor command entry (WSL/macOS) |
-| `jq` | Recommended for log processing |
-| `gh` | Optional, GitHub CLI |
-| `wrangler` | Optional, Cloudflare CLI |
+Hard constraints enforced for all agents:
 
-## FAQ
+| Rule | Details |
+|------|---------|
+| No rug pulls | No removing liquidity, hidden mints, or backdoor admin keys |
+| No unaudited mainnet | Testnet + `contracts-samczsun` audit before ANY mainnet deploy |
+| No private key exposure | Never commit keys, seeds, or wallet secrets |
+| No wash trading | No artificial volume or self-dealing |
+| No destructive git | No force-push to main, no `gh repo delete` |
+| User funds are sacred | Protecting user assets overrides all other priorities |
 
-### 1) WSL `.sh` fails with `^M` / `bad interpreter`
+## Decision Principles
 
-- Cause: CRLF line endings in shell scripts
-- Fix:
-  - Keep LF rules in `.gitattributes`
-  - Run `git config core.autocrlf false && git config core.eol lf`
+1. **Ship > Plan > Discuss** — if you can ship to testnet, do not over-discuss.
+2. **Testnet fast, mainnet careful** — speed on testnet, rigor on mainnet.
+3. **Real yield > token emissions** — sustainable revenue before inflationary incentives.
+4. **Audit before deploy** — no exceptions, no shortcuts.
+5. **Boring technology first** — use battle-tested contracts (OpenZeppelin) unless new approaches give clear 10x upside.
+6. **Composability first** — build protocols others can build on.
 
-### 2) WSL says `codex`/`claude` command not found
+## Tooling
 
-- Cause: CLI installed on Windows only, missing in WSL
-- Fix: install `node` and your chosen CLI inside WSL (`@openai/codex` or Claude Code)
+| Tool | Purpose |
+|------|---------|
+| Foundry (`forge`/`cast`/`anvil`) | Smart contract dev, testing, deployment |
+| OpenZeppelin v5 | Battle-tested contract libraries |
+| ethers.js v6 | Wallet connection, on-chain interaction |
+| `gh` CLI | GitHub operations |
+| `wrangler` | Cloudflare deployment |
+| Claude Code | Agent orchestration engine |
 
-### 3) `make install` fails inside WSL
+## Quick Start
 
-- Cause: no available `systemctl --user` in current session
-- Fix:
-  - Verify WSL systemd is enabled
-  - Run `systemctl --user --version`
-  - Re-open WSL session and retry if needed
+```bash
+# Clone
+git clone https://github.com/altantutar/auto-company.git
+cd auto-company
+
+# Run the Yield Router tests
+cd projects/yield-router
+forge install
+forge build
+forge test -vvv    # 47 tests pass
+
+# View the frontend locally
+cd frontend
+python3 -m http.server 8889
+# Open http://localhost:8889
+```
+
+## Steering
+
+The team runs autonomously. You steer by editing `memories/consensus.md`:
+
+| Method | Action |
+|--------|--------|
+| **Change direction** | Edit "Next Action" in `memories/consensus.md` |
+| **Review outputs** | Check `docs/*/` for agent artifacts |
+| **Review code** | Check `projects/*/` for generated projects |
 
 ## Disclaimer
 
 This is an **experimental project**:
 
-- **Daemon mode works on both macOS and WSL**: launchd on macOS, systemd --user on WSL
-- **Windows entry requires WSL**: PowerShell is only the control layer
-- **Still under test**: runs, but stability is not guaranteed
-- **Costs money**: each cycle consumes model quota
-- **Fully autonomous**: agents act without approval prompts; configure guardrails carefully in `CLAUDE.md`
-- **No warranty**: review `docs/` and `projects/` regularly
-
-Suggested rollout: start with `make start` (foreground), then move to daemon mode (`make install` on macOS/WSL, `.\scripts\windows\start-win.ps1` on Windows).
-
-## 🤝 Contribution
-
-Issues and pull requests are welcome.
-
-Recommended flow:
-1. Fork the repository.
-2. Create a feature branch.
-3. Keep changes scoped and testable.
-4. Open a PR with clear context, risk, and verification notes.
+- **Costs money**: each agent pipeline consumes model quota
+- **Fully autonomous**: agents act without approval prompts; configure guardrails in `CLAUDE.md`
+- **Smart contracts are unaudited by humans**: do not deposit real funds without a professional audit
+- **No warranty**: review all generated code before any mainnet use
 
 ## Acknowledgments
 
-- [nicepkg/auto-company](https://github.com/nicepkg/auto-company) - initial macOS edition
-- [continuous-claude](https://github.com/AnandChowdhary/continuous-claude) - cross-session shared notes
-- [ralph-claude-code](https://github.com/frankbria/ralph-claude-code) - exit signal interception
-- [claude-auto-resume](https://github.com/terryso/claude-auto-resume) - usage-limit resume pattern
+- [nicepkg/auto-company](https://github.com/nicepkg/auto-company) — original Auto Company framework
+- [OpenZeppelin](https://github.com/OpenZeppelin/openzeppelin-contracts) — battle-tested Solidity libraries
+- [Foundry](https://github.com/foundry-rs/foundry) — Solidity development toolchain
+</div>
