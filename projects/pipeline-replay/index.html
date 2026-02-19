@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auto Company — Mission Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #030303;
+    --panel: rgba(10, 10, 10, 0.7);
+    --border: rgba(255, 255, 255, 0.06);
+    --text: rgba(255, 255, 255, 0.7);
+    --dim: rgba(255, 255, 255, 0.3);
+    --green: #10B981;
+    --green-bg: rgba(16, 185, 129, 0.08);
+    --blue: #8B5CF6;
+    --blue-bg: rgba(139, 92, 246, 0.06);
+    --amber: #F59E0B;
+    --amber-bg: rgba(245, 158, 11, 0.08);
+    --red: #EF4444;
+    --red-bg: rgba(239, 68, 68, 0.08);
+    --white: #ffffff;
+    --cyan: #06B6D4;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* ─── Top Bar ─── */
+  .topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 20px;
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    flex-shrink: 0;
+  }
+
+  .topbar-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .logo {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 15px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+
+  .pipeline-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 0.05em;
+  }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .progress-bar {
+    width: 180px;
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--blue), var(--cyan));
+    transition: width 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .progress-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    min-width: 36px;
+  }
+
+  .timer {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ─── Main Layout ─── */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    padding: 16px 20px;
+    gap: 16px;
+  }
+
+  /* ─── Grid ─── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  .cell {
+    background: var(--panel);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                background 0.4s cubic-bezier(0.23, 1, 0.32, 1),
+                box-shadow 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cell.processing {
+    border-color: rgba(139, 92, 246, 0.4);
+    background: rgba(139, 92, 246, 0.06);
+    box-shadow: 0 0 20px -10px rgba(139, 92, 246, 0.4);
+  }
+
+  .cell.done {
+    border-color: rgba(16, 185, 129, 0.3);
+    background: rgba(16, 185, 129, 0.04);
+  }
+
+  .cell.done.has-findings {
+    border-color: rgba(245, 158, 11, 0.3);
+    background: rgba(245, 158, 11, 0.04);
+  }
+
+  .cell-step {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .cell-name {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: 17px;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+
+  .cell-persona {
+    font-size: 11px;
+    color: var(--dim);
+    margin-bottom: 12px;
+  }
+
+  .cell-output {
+    font-size: 12px;
+    font-weight: 300;
+    color: var(--text);
+    line-height: 1.6;
+    flex: 1;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cell.processing .cell-output,
+  .cell.done .cell-output { opacity: 1; }
+
+  .cell-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  .status {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .status-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--dim);
+    transition: background 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .status.idle { color: var(--dim); }
+  .status.idle .status-dot { background: var(--dim); }
+
+  .status.live { color: var(--blue); }
+  .status.live .status-dot { background: var(--blue); animation: pulse 1.5s ease infinite; }
+
+  .status.complete { color: var(--green); }
+  .status.complete .status-dot { background: var(--green); }
+
+  .status.warning { color: var(--amber); }
+  .status.warning .status-dot { background: var(--amber); }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .verdict-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    padding: 3px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .cell.done .verdict-badge { opacity: 1; }
+
+  .v-go { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.15); }
+  .v-done { background: rgba(6,182,212,0.1); color: var(--cyan); border: 1px solid rgba(6,182,212,0.15); }
+  .v-no { background: rgba(239,68,68,0.1); color: var(--red); border: 1px solid rgba(239,68,68,0.15); }
+  .v-warn { background: rgba(245,158,11,0.1); color: var(--amber); border: 1px solid rgba(245,158,11,0.15); }
+
+  .stat {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  /* ─── Activity Log ─── */
+  .log-section {
+    flex-shrink: 0;
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+  }
+
+  .log-header {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .log {
+    height: 120px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .log::-webkit-scrollbar { width: 4px; }
+  .log::-webkit-scrollbar-track { background: transparent; }
+  .log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .log-line {
+    display: flex;
+    gap: 10px;
+    padding: 2px 0;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    opacity: 0;
+    transform: translateY(4px);
+    animation: logIn 0.3s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  }
+
+  @keyframes logIn {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .log-time { color: var(--dim); min-width: 52px; }
+  .log-agent { color: var(--blue); min-width: 130px; }
+  .log-msg { color: var(--text); }
+  .log-msg .stat { color: var(--green); }
+
+  .log-line.fix .log-agent { color: var(--amber); }
+  .log-line.fix .log-msg .stat { color: var(--green); }
+
+  .log-line.result .log-agent { color: var(--green); }
+  .log-line.result .log-msg { color: var(--green); font-weight: 600; }
+
+  /* ─── Final overlay ─── */
+  .final-overlay {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(3, 3, 3, 0.94);
+    backdrop-filter: blur(40px);
+    -webkit-backdrop-filter: blur(40px);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), visibility 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+    z-index: 100;
+  }
+
+  .final-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .final-number {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(56px, 12vw, 120px);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    color: var(--green);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .final-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(10px, 1.5vw, 13px);
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+  }
+
+  .final-tagline {
+    font-family: 'Instrument Serif', Georgia, serif;
+    font-size: clamp(16px, 3vw, 24px);
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .final-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(10px, 1.5vw, 12px);
+    color: var(--dim);
+    letter-spacing: 0.08em;
+  }
+
+  .replay-btn {
+    margin-top: 40px;
+    padding: 10px 24px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.1);
+    color: var(--dim);
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    letter-spacing: 0.08em;
+  }
+  .replay-btn:hover {
+    border-color: rgba(255,255,255,0.2);
+    color: var(--white);
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Top Bar ─── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="logo">Auto Company</div>
+    <div class="pipeline-label">pipeline: yield-router &middot; base &middot; usdc</div>
+  </div>
+  <div class="topbar-right">
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+      <div class="progress-text" id="progress-text">0/9</div>
+    </div>
+    <div class="timer" id="timer">00:00</div>
+  </div>
+</div>
+
+<!-- ─── Main ─── -->
+<div class="main">
+  <div class="grid" id="grid">
+
+    <div class="cell" id="cell-0">
+      <div class="cell-step">01 &middot; research</div>
+      <div class="cell-name">research-hasu</div>
+      <div class="cell-persona">Hasu</div>
+      <div class="cell-output">
+        Base L2: <span class="stat">$4.63B</span> TVL<br>
+        No dominant vault aggregator<br>
+        Top opportunity identified
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-0"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-done">identified</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-1">
+      <div class="cell-step">02 &middot; strategy</div>
+      <div class="cell-name">ceo-armstrong</div>
+      <div class="cell-persona">Brian Armstrong</div>
+      <div class="cell-output">
+        <span class="stat">GO</span> &mdash; 14-week timeline<br>
+        Trust is the product<br>
+        $25K bug bounty budget
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-1"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-go">go</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-2">
+      <div class="cell-step">03 &middot; protocol</div>
+      <div class="cell-name">protocol-buterin</div>
+      <div class="cell-persona">Vitalik Buterin</div>
+      <div class="cell-output">
+        <span class="stat">590</span>-line mechanism spec<br>
+        ERC-4626 vault + 3 adapters<br>
+        5 attack vectors analyzed
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-2"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-done">designed</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-3">
+      <div class="cell-step">04 &middot; tokenomics</div>
+      <div class="cell-name">tokenomics-cobie</div>
+      <div class="cell-persona">Cobie</div>
+      <div class="cell-output">
+        Verdict: <span class="stat">NO TOKEN</span><br>
+        Fee model scores 9.5/10 fairness<br>
+        Passes all 5 Ponzi checks
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-3"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-no">no token</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-4">
+      <div class="cell-step">05 &middot; product</div>
+      <div class="cell-name">defi-kulechov</div>
+      <div class="cell-persona">Stani Kulechov</div>
+      <div class="cell-output">
+        <span class="stat">1,163</span>-line product spec<br>
+        Risk params + circuit breakers<br>
+        Composable interfaces
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-4"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-done">specified</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-5">
+      <div class="cell-step">06 &middot; engineering</div>
+      <div class="cell-name">solidity-gakonst</div>
+      <div class="cell-persona">Georgios Konstantopoulos</div>
+      <div class="cell-output">
+        <span class="stat">8</span> contracts &middot; Foundry<br>
+        Aave + Morpho + Aerodrome<br>
+        <span class="stat">39/39</span> tests passing
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-5"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-go">built</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-6">
+      <div class="cell-step">07 &middot; security</div>
+      <div class="cell-name">contracts-samczsun</div>
+      <div class="cell-persona">samczsun</div>
+      <div class="cell-output">
+        <span style="color:var(--red)">2 critical</span> &middot; <span style="color:var(--amber)">4 high</span><br>
+        8 medium &middot; 6 low<br>
+        Must fix before deploy
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-6"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-warn">conditional</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-7">
+      <div class="cell-step">08 &middot; investment</div>
+      <div class="cell-name">investor-haseeb</div>
+      <div class="cell-persona">Haseeb Qureshi</div>
+      <div class="cell-output">
+        P($10M TVL 90d) = <span class="stat">35%</span><br>
+        Conditional on audit fixes<br>
+        Strong risk/reward profile
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-7"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-warn">conditional</div>
+      </div>
+    </div>
+
+    <div class="cell" id="cell-8">
+      <div class="cell-step">09 &middot; infrastructure</div>
+      <div class="cell-name">infra-karalabe</div>
+      <div class="cell-persona">Karalabe</div>
+      <div class="cell-output">
+        <span class="stat">1,067</span>-line deploy plan<br>
+        Keeper arch + monitoring<br>
+        Incident runbook ready
+      </div>
+      <div class="cell-footer">
+        <div class="status idle" id="status-8"><div class="status-dot"></div> Idle</div>
+        <div class="verdict-badge v-done">planned</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ─── Activity Log ─── -->
+  <div class="log-section">
+    <div class="log-header">Activity Log</div>
+    <div class="log" id="log"></div>
+  </div>
+</div>
+
+<!-- ─── Final Overlay ─── -->
+<div class="final-overlay" id="final">
+  <div class="final-number">47/47</div>
+  <div class="final-label">All Tests Passing</div>
+  <div class="final-tagline">14 AI agents. 0 humans. 1 audited DeFi protocol.</div>
+  <div class="final-sub">yield router &middot; base l2 &middot; ready for testnet</div>
+  <button class="replay-btn" onclick="location.reload()">replay</button>
+</div>
+
+<script>
+const agents = [
+  { name: 'research-hasu',       msg: 'Base L2 identified — <span class="stat">$4.63B TVL</span>, no dominant vault' },
+  { name: 'ceo-armstrong',       msg: 'Decision: <span class="stat">GO</span> — 14-week timeline, trust is the product' },
+  { name: 'protocol-buterin',    msg: 'Mechanism designed — 590-line spec, ERC-4626 vault, 5 attack vectors' },
+  { name: 'tokenomics-cobie',    msg: 'Verdict: <span class="stat">NO TOKEN</span> — fee model passes all 5 Ponzi checks' },
+  { name: 'defi-kulechov',       msg: 'Product spec complete — <span class="stat">1,163 lines</span>, risk params, circuit breakers' },
+  { name: 'solidity-gakonst',    msg: 'Built 8 contracts in Foundry — <span class="stat">39/39 tests passing</span>' },
+  { name: 'contracts-samczsun',  msg: 'Audit: 2 critical, 4 high findings — <span class="stat">CONDITIONAL GO</span>' },
+  { name: 'investor-haseeb',     msg: 'Assessment: P($10M TVL 90d) = <span class="stat">35%</span> — conditional invest' },
+  { name: 'infra-karalabe',      msg: 'Deploy plan ready — <span class="stat">1,067 lines</span>, keeper + monitoring + runbook' },
+];
+
+const fixes = [
+  { id: 'C-01', msg: 'Fixed zero slippage on Aerodrome LP — added 0.5% tolerance' },
+  { id: 'C-02', msg: 'Fixed withdrawAll() stale balance — using actual balanceOf' },
+  { id: 'H-01', msg: 'Fixed harvest griefing — MIN_HARVEST_PROFIT = 1 USDC' },
+  { id: 'H-02', msg: 'Fixed silent under-delivery — InsufficientLiquidity revert' },
+  { id: 'H-03', msg: 'Fixed dead APY — setAPY() + updateAdapterAPYs() for keeper' },
+  { id: 'M-*',  msg: 'Fixed bounds, reentrancy guards, HWM reset after emergency' },
+];
+
+let elapsed = 0;
+let timerInterval = null;
+
+function startTimer() {
+  elapsed = 0;
+  timerInterval = setInterval(() => {
+    elapsed++;
+    const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+    const s = String(elapsed % 60).padStart(2, '0');
+    document.getElementById('timer').textContent = m + ':' + s;
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerInterval);
+}
+
+function updateProgress(done, total) {
+  document.getElementById('progress').style.width = (done / total * 100) + '%';
+  document.getElementById('progress-text').textContent = done + '/' + total;
+}
+
+function addLog(agent, msg, cls) {
+  const log = document.getElementById('log');
+  const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
+  const s = String(elapsed % 60).padStart(2, '0');
+  const line = document.createElement('div');
+  line.className = 'log-line' + (cls ? ' ' + cls : '');
+  line.innerHTML = `<span class="log-time">${m}:${s}</span><span class="log-agent">${agent}</span><span class="log-msg">${msg}</span>`;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+function setStatus(i, state) {
+  const el = document.getElementById('status-' + i);
+  el.className = 'status ' + state;
+  const labels = { idle: 'Idle', live: 'Live', complete: 'Complete', warning: 'Warning' };
+  el.innerHTML = `<div class="status-dot"></div> ${labels[state]}`;
+}
+
+function setCellState(i, state) {
+  const cell = document.getElementById('cell-' + i);
+  cell.className = 'cell' + (state ? ' ' + state : '');
+}
+
+function sleep(ms) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function run() {
+  startTimer();
+  addLog('system', 'Pipeline started — target: yield-router', '');
+
+  await sleep(800);
+
+  // Run 9 agents
+  for (let i = 0; i < 9; i++) {
+    setStatus(i, 'live');
+    setCellState(i, 'processing');
+    addLog(agents[i].name, 'Processing...', '');
+
+    await sleep(1800);
+
+    if (i === 6) {
+      setStatus(i, 'warning');
+      setCellState(i, 'done has-findings');
+    } else {
+      setStatus(i, 'complete');
+      setCellState(i, 'done');
+    }
+
+    addLog(agents[i].name, agents[i].msg, '');
+    updateProgress(i + 1, 9);
+
+    await sleep(400);
+  }
+
+  await sleep(1000);
+
+  // Audit fix cycle
+  addLog('system', 'Audit fix cycle initiated — 0 human intervention', 'fix');
+  await sleep(600);
+
+  for (let i = 0; i < fixes.length; i++) {
+    addLog(fixes[i].id, fixes[i].msg, 'fix');
+    await sleep(500);
+  }
+
+  await sleep(400);
+  addLog('forge', '<span class="stat">47/47 tests passing</span> — all findings resolved', 'result');
+
+  // Update samczsun cell
+  setStatus(6, 'complete');
+  setCellState(6, 'done');
+
+  await sleep(1500);
+
+  stopTimer();
+
+  // Show final overlay
+  document.getElementById('final').classList.add('visible');
+}
+
+run();
+</script>
+</body>
+</html>

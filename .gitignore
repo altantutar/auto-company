@@ -145,6 +145,8 @@ memories/consensus.md.bak
 # Projects directory (show folder on GitHub, hide contents)
 projects/*
 !projects/.gitkeep
+!projects/yield-router/
+!projects/pipeline-replay/
 
 # Local/private outputs (do not publish)
 AGENTS.md
@@ -172,6 +174,8 @@ docs/*
 docs/*/*
 !docs/*/.gitkeep
 !docs/windows-setup.md
+!docs/marketing/launch-tweets.md
 # Ignore all memories (keep folder marker only)
 memories/*
 !memories/.gitkeep
+!memories/consensus.md

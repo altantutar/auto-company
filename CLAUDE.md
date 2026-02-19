@@ -34,7 +34,7 @@ Humans guide direction only by editing `memories/consensus.md` under "Next Actio
 
 ## Team Architecture
 
-14 AI agents, each modeled on top-tier expert thinking. Full definitions are in `.claude/agents/`.
+15 AI agents, each modeled on top-tier expert thinking. Full definitions are in `.claude/agents/`.
 
 ### Strategy Layer
 
@@ -43,6 +43,7 @@ Humans guide direction only by editing `memories/consensus.md` under "Next Actio
 | `ceo-bezos` | Jeff Bezos | New product/feature evaluation, business model and pricing direction, major strategic choices, resource allocation, priority setting |
 | `cto-vogels` | Werner Vogels | Architecture design, technical selection, reliability/performance decisions, technical debt review |
 | `critic-munger` | Charlie Munger | Challenge feasibility, identify fatal flaws, prevent group delusion, inversion, pre-mortem. **Required before major decisions** |
+| `investor-horowitz` | Ben Horowitz | Pre-push investment gate: value-per-commit, due diligence readiness, scalability, defensibility, burn efficiency. **Required before merging to main or tagged releases** |
 
 ### Product Layer
 
@@ -90,7 +91,7 @@ Humans guide direction only by editing `memories/consensus.md` under "Next Actio
 Team composition rules: `.claude/skills/team/SKILL.md`.
 
 1. **New Product Evaluation**: `research-thompson` -> `ceo-bezos` -> `critic-munger` -> `product-norman` -> `cto-vogels` -> `cfo-campbell`
-2. **Feature Development**: `interaction-cooper` -> `ui-duarte` -> `fullstack-dhh` -> `qa-bach` -> `devops-hightower`
+2. **Feature Development**: `interaction-cooper` -> `ui-duarte` -> `fullstack-dhh` -> `qa-bach` -> `investor-horowitz` -> `devops-hightower`
 3. **Product Launch**: `qa-bach` -> `devops-hightower` -> `marketing-godin` -> `sales-ross` -> `operations-pg` -> `ceo-bezos`
 4. **Pricing and Monetization**: `research-thompson` -> `cfo-campbell` -> `sales-ross` -> `critic-munger` -> `ceo-bezos`
 5. **Weekly Review**: `operations-pg` -> `sales-ross` -> `cfo-campbell` -> `qa-bach` -> `ceo-bezos`
@@ -115,6 +116,7 @@ Each agent stores outputs under `docs/<role>/`:
 | `operations-pg` | `docs/operations/` | Growth experiments, retention analysis, ops metrics |
 | `sales-ross` | `docs/sales/` | Funnel analysis, conversion plans, pricing playbooks |
 | `cfo-campbell` | `docs/cfo/` | Financial models, pricing analyses, unit economics |
+| `investor-horowitz` | `docs/investor/` | Investment assessments, code value analysis, due diligence checks |
 | `research-thompson` | `docs/research/` | Market/competitor/trend intelligence |
 
 ## Tooling
